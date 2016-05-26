@@ -3,7 +3,7 @@ An R HTMLWidget project template.
 # Installation in R
 
 1. `library(devtools)`
-1. `install_github('NumbersInternational/rhtmlTemplate')`
+1. `install_github('NumbersInternational/rhtmlTemplate', auth_token='????????????????????')`
 
 Simplest Example to verify installation:
 
