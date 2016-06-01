@@ -13,28 +13,32 @@ gulp.task('default', function () {
   gulp.start('build');
 });
 
+gulp.task('build', function(done) {
+  var runSequence = require('run-sequence');
+  runSequence('clean', 'core', ['makeDocs', 'makeExample'], done);
+});
+
 gulp.task('core', ['compile-coffee', 'less', 'copy']);
-gulp.task('build', ['core', 'makeDocs', 'makeExample']);
 
 gulp.task('serve', ['connect', 'watch'], function () {
   require('opn')('http://localhost:9000');
 });
 
-//@TODO clean doesn't finish before next task so I have left it out of build pipeline for now ..
 gulp.task('clean', function(done) {
   var locationsToDelete = ['browser', 'inst', 'man', 'R', 'examples'];
-  var deletePromises = locationsToDelete.map(function(location) { return fs.removeAsync(location); });
-  Promise.all(deletePromises).then(done);
-  return true;
+  var deletePromises = locationsToDelete.map( function(location) { return fs.removeAsync(location); })
+  Promise.all(deletePromises).then(function() { done() });
 });
 
-gulp.task('makeDocs', function () {
+gulp.task('makeDocs', ['core'], function () {
   var shell = require('gulp-shell');
   return gulp.src('./build/makeDoc.r', {read: false})
-    .pipe(shell(['r --no-save < <%= file.path %>', ], {}))
+    .pipe(shell([
+      'r --no-save 2>/dev/null >/dev/null < <%= file.path %>',
+    ], {}))
 });
 
-gulp.task('makeExample', function (done) {
+gulp.task('makeExample', ['core'], function (done) {
   var generateR = require('./build/generateExamplesInR.js');
   fs.mkdirpAsync('examples')
     .then(function () { return fs.readFileAsync('theSrc/features/features.json', { encoding: 'utf8' }) })
@@ -124,7 +128,7 @@ gulp.task('watch', ['connect'], function () {
 
   // when these files change then do this,
   // for example when the json file changes rerun the copy command
-  gulp.watch('resources/**/*.json', ['copy']);
+  gulp.watch('theSrc/**/*.json', ['copy']);
   gulp.watch('theSrc/**/*.html', ['copy']);
   gulp.watch('theSrc/images/**/*', ['copy']);
   gulp.watch('theSrc/styles/**/*.less', ['less']);
