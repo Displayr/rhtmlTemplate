@@ -28,9 +28,9 @@ This wrapper also handles any errors thrown when interacting the the Template cl
 As stated, this contains most of the business logic for the widget. There is a lot of flexibility in how each widget is implemented, but if you want to use `rhtmlTemplate.coffee` wrapper, as well as the two parent classes `RhtmlStatefulWidget` and `RhtmlSvgWidget` then your class only needs to implement the following top level functions:
 
 * _processConfig - process the input data before rendering the widget
-* _redraw - this performs the initial and subsequnt rendering of the widget.
+* _redraw - this performs the initial and subsequent rendering of the widget.
 
-We now describe the inner workings in detail. Note that you dont need to copy these patterns, but it might make things easier if you do.
+We now describe the inner workings in detail. Note that you don't need to copy these patterns, but it might make things easier if you do.
 
 When the htmlwidget framework is called from R it begins by calling the `initialize` function in `rthmlTemplate.coffee`. This creates a new instance of the `Template` class. This instance of the `Template` class is what is passed as the `instance` parameter to the `resize` function in `rhtmlTemplate.coffee` and the `renderValue` function in `rhtmlTemplate.coffee`.
 
@@ -38,7 +38,7 @@ The Template constructor does not do much, other than initialize state. In this 
 
 Next the htmlwidget framework calls the renderValue function defined in rhtmlTemplate.coffee. The renderValue function parses the config and traps errors. next it calls `Template.setConfig` and `Template.draw`.
 
-Template.setConfig is defined in the `RhtmlSvgWidget` parent class and initializes a table-id, then it calls `_processConfig`. **All child class of `RhtmlSvgWidget` (thats you!) must reimplement `_processConfig`**. In processConfig you validate and normalize all of the input config so that the rest of the Widget code can safely assume the format of the config. rhtmlTemplate does not really have any config validation and normalization. Have a look at rhtmlPictographs to see a more concrete example of what setConfig is supposed to do.
+Template.setConfig is defined in the `RhtmlSvgWidget` parent class and initializes a table-id, then it calls `_processConfig`. **All child class of `RhtmlSvgWidget` (that's you!) must reimplement `_processConfig`**. In processConfig you validate and normalize all of the input config so that the rest of the Widget code can safely assume the format of the config. rhtmlTemplate does not really have any config validation and normalization. Have a look at rhtmlPictographs to see a more concrete example of what setConfig is supposed to do.
 
 Template.draw is just a wrapper that calls three subsequent functions:
 * _manipulateRootElementSize: This is defined in the `RhtmlSvgWidget` parent class. This function sets the width and height of the DOM container to 100% so the widget will grow to fit the displayr container. You should not need to modify it.
@@ -49,13 +49,13 @@ You are free to throw descriptive errors via the `throw new Error("good descript
 
 If your widget has any state that needs to be persisted, you can extend the `RhtmlStatefulWidget` class. This is detailed below in the RhtmlStatefulWidget section.
 
-If your widget is SVG based, you can extend the `RhtmlSvgWidget` class. This is detailed in the RhtmlSvgWidget section. Note that if you extend RhtmlSvgWidget, then you also get RhtmlStatefulWidget, so you dont need to (in fact you cannot in JS) extend both directly.
+If your widget is SVG based, you can extend the `RhtmlSvgWidget` class. This is detailed in the RhtmlSvgWidget section. Note that if you extend RhtmlSvgWidget, then you also get RhtmlStatefulWidget, so you don't need to (in fact you cannot in JS) extend both directly.
 
 ## `RhtmlSvgWidget` - from [rhtmlBaseClasses](https://github.com/NumbersInternational/rhtmlBaseClasses)
 
 **Important Note** - the docs below are just a (potentially out of date) mirror of the docs in the [rhtmlBaseClasses](https://github.com/NumbersInternational/rhtmlBaseClasses) repo. You should check the docs in that repo.
 
-This just does some basic formatting of the initial DOM and creates the outerSvg with a viewbox set to the initial width and height. If you extend this class you must define `_redraw` and `_processConfig`, as outlined above.
+This just does some basic formatting of the initial DOM and creates the outerSvg with a `viewBox` set to the initial width and height. If you extend this class you must define `_redraw` and `_processConfig`, as outlined above.
 
 ## `RhtmlStatefulWidget` - from [rhtmlBaseClasses](https://github.com/NumbersInternational/rhtmlBaseClasses)
 
@@ -70,10 +70,10 @@ To be used by your class:
 * **_initializeState**: set the initial state without notifying watchers. Typically called from your constructor
 * **_updateStateListeners**: - Invoke the callbacks of each of the registered state watchers. You should not need to call this, as it is called automatically when `_putState`, `_updateState`, and `setState` are called. However, it can be called if you need.
 
-To be called externally by users of your class or called internall by child classes:
+To be called externally by users of your class or called internally by child classes:
 * **getState**: Get the current state of the widget
 * **setState**: Set the current state of the widget. Note that this will notify all state watchers
-* **partialStateUpdate**: Partially repalce the widget state, and notify all state watchers
+* **partialStateUpdate**: Partially replace the widget state, and notify all state watchers
 * **registerStateListener**: Provide a callback function that will be executed every time the state updates. The callback will be invoked with the current state provided as the first and only parameter to the callback.
 
 The [render.html](/theSrc/render.html) provides an example of how an external agent would register as a listener, and how to manually setState during load. Have a read through that source if you are considering hooking into widget state.

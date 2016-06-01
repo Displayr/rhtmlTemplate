@@ -15,7 +15,7 @@ gulp.task('default', function () {
 
 gulp.task('build', function(done) {
   var runSequence = require('run-sequence');
-  runSequence('clean', 'core', ['makeDocs', 'makeExample'], done);
+  runSequence('clean', 'test', 'core', ['makeDocs', 'makeExample'], done);
 });
 
 gulp.task('core', ['compile-coffee', 'less', 'copy']);
@@ -48,6 +48,14 @@ gulp.task('makeExample', ['core'], function (done) {
     .catch( function(err) { console.log("makeExample error: " + err)})
     .then(done);
 })
+
+gulp.task('test', function (done) {
+  var Server = require('karma').Server;
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
 
 gulp.task('less', function () {
   var less = require('gulp-less');
@@ -88,16 +96,8 @@ gulp.task('copy', function () {
     .pipe(rename(widgetName + '.R'))
     .pipe(gulp.dest('R/'));
 
-  // TEMPLATE! - this list of dependencies may need to be updated to match your widget
-  var extLibs = [
-    'node_modules/lodash/lodash.min.js',
-    'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/d3/d3.min.js',
-    'node_modules/rhtmlBaseClasses/dist/rHtmlSvgWidget.js',
-    'node_modules/rhtmlBaseClasses/dist/rHtmlStatefulWidget.js'
-  ]
-
-  gulp.src(extLibs)
+  // TEMPLATE! - this list of dependencies in the ./build/externalLibs.json file may need to be updated to match your widget
+  gulp.src(require('./build/externalLibs.json'))
     .pipe(gulp.dest('inst/htmlwidgets/lib/'))
     .pipe(gulp.dest('browser/external/'))
 
