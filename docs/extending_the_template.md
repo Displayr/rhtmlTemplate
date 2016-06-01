@@ -33,12 +33,15 @@ You will need to modify some files before you get to the coding part. Everything
 * ./DESCRIPTION - update the widget name
 * ./build/generateExamplesInR.js - update the widget name and R function name
 * ./gulpfile.js - update the widget name and keep the list of dependencies up to date
+* ./build/externalLibs.json - keep the list of dependencies up to date
 * ./theSrc/R/htmlwidget.R - update the widget name and keep the R docs up to date
 * ./theSrc/R/htmlwidget.yaml - keep the list of dependencies up to date
 * ./theSrc/render.html - keep the list of JS files up to date
 * ./theSrc/features.r.html - update the widget name and R function name
 * ./theSrc/scripts/rhtmlTemplate.coffee - rename file to match your widget name, update the widget name in the file. Note the file name (without the .coffee extension) must match the widget name specified in the createWidget call in `htmlwidget.R`
 * ./theSrc/scripts/Template.coffee - this is the top level class that encapsulates the business logic of the widget. You will need to rename the file to something the makes sense for your widget (e.g., Pictograph), and update most of the file. There are instructions in the file for what needs to stay the same and what should be changed. It is worth reading [how the code works](./how_the_code_works.md) before starting.
+* ./karma.conf.js - this is the test config. There is a list of source files that will need to be updated with your widget name.
+* ./test/templateSpec.coffee - this tests Template.coffee. You will need to rename it and write some tests.
 
 That should be it. If you follow the instructions above you shouldn't have to change anything else, but you are free to structure things how you like, it will just require some modifications to `gulpfile.js`.
 
@@ -51,7 +54,7 @@ Currently the rhtmlTemplate uses `lodash`, `jquery`, and `d3` as JS dependencies
 1. Install the module from npm and save it to the list of dependencies via `npm install --save X`. This will install the module locally in node_modules, and it will add it to the list of project dependencies in `package.json`
 1. Inspect the node_modules/X directory to determine the version and the main file.
     1. For example jquery is version 2.2.2, which is listed in node_modules/jquery/package.json, and the main file is in node_modules/jquery/dist/jquery.min.js
-1. Add the dependency to extLibs variable in the `gulpfile.js` file.
+1. Add the dependency to extLibs array in the `./build/externalLibs.json` file.
 1. Add the dependency to `htmlwidget.yaml`.
 1. Add the dependency to `render.html` in the form of a script tag.
 

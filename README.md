@@ -68,7 +68,7 @@ See docs on the [htmlwidget_build_system](docs/htmlwidget_build_system.md) to un
 
 ## Contributing to rhtmlTemplate
 1. Do not work in master, as the master branch of rhtmlTemplate is used to verify the R server build process.
-1. Create a branch, make some changes, push your branch, and create a pull request on github.
+1. Create a branch, make some changes, add test for your changes, update the docs if necessary, push your branch, and create a pull request on github.
 
 # Docs
 

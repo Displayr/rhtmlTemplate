@@ -13,28 +13,32 @@ gulp.task('default', function () {
   gulp.start('build');
 });
 
+gulp.task('build', function(done) {
+  var runSequence = require('run-sequence');
+  runSequence('clean', 'test', 'core', ['makeDocs', 'makeExample'], done);
+});
+
 gulp.task('core', ['compile-coffee', 'less', 'copy']);
-gulp.task('build', ['core', 'makeDocs', 'makeExample']);
 
 gulp.task('serve', ['connect', 'watch'], function () {
   require('opn')('http://localhost:9000');
 });
 
-//@TODO clean doesn't finish before next task so I have left it out of build pipeline for now ..
 gulp.task('clean', function(done) {
   var locationsToDelete = ['browser', 'inst', 'man', 'R', 'examples'];
-  var deletePromises = locationsToDelete.map(function(location) { return fs.removeAsync(location); });
-  Promise.all(deletePromises).then(done);
-  return true;
+  var deletePromises = locationsToDelete.map( function(location) { return fs.removeAsync(location); })
+  Promise.all(deletePromises).then(function() { done() });
 });
 
-gulp.task('makeDocs', function () {
+gulp.task('makeDocs', ['core'], function () {
   var shell = require('gulp-shell');
   return gulp.src('./build/makeDoc.r', {read: false})
-    .pipe(shell(['r --no-save < <%= file.path %>', ], {}))
+    .pipe(shell([
+      'r --no-save 2>/dev/null >/dev/null < <%= file.path %>',
+    ], {}))
 });
 
-gulp.task('makeExample', function (done) {
+gulp.task('makeExample', ['core'], function (done) {
   var generateR = require('./build/generateExamplesInR.js');
   fs.mkdirpAsync('examples')
     .then(function () { return fs.readFileAsync('theSrc/features/features.json', { encoding: 'utf8' }) })
@@ -44,6 +48,14 @@ gulp.task('makeExample', function (done) {
     .catch( function(err) { console.log("makeExample error: " + err)})
     .then(done);
 })
+
+gulp.task('test', function (done) {
+  var Server = require('karma').Server;
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
 
 gulp.task('less', function () {
   var less = require('gulp-less');
@@ -84,16 +96,8 @@ gulp.task('copy', function () {
     .pipe(rename(widgetName + '.R'))
     .pipe(gulp.dest('R/'));
 
-  // TEMPLATE! - this list of dependencies may need to be updated to match your widget
-  var extLibs = [
-    'node_modules/lodash/lodash.min.js',
-    'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/d3/d3.min.js',
-    'node_modules/rhtmlBaseClasses/dist/rHtmlSvgWidget.js',
-    'node_modules/rhtmlBaseClasses/dist/rHtmlStatefulWidget.js'
-  ]
-
-  gulp.src(extLibs)
+  // TEMPLATE! - this list of dependencies in the ./build/externalLibs.json file may need to be updated to match your widget
+  gulp.src(require('./build/externalLibs.json'))
     .pipe(gulp.dest('inst/htmlwidgets/lib/'))
     .pipe(gulp.dest('browser/external/'))
 
@@ -124,7 +128,7 @@ gulp.task('watch', ['connect'], function () {
 
   // when these files change then do this,
   // for example when the json file changes rerun the copy command
-  gulp.watch('resources/**/*.json', ['copy']);
+  gulp.watch('theSrc/**/*.json', ['copy']);
   gulp.watch('theSrc/**/*.html', ['copy']);
   gulp.watch('theSrc/images/**/*', ['copy']);
   gulp.watch('theSrc/styles/**/*.less', ['less']);
