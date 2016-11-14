@@ -9,12 +9,26 @@ class Template extends RhtmlSvgWidget
     super el, width, height
 
     @_initializeState { selected: null }
+    @defaultColors = ['red', 'blue', 'green', 'orange']
 
   _processConfig: () ->
     console.log '_processConfig. Change this function in your rhtmlWidget'
     console.log 'the config has already been added to the context at @config, you must now "process" it'
+    console.log '@config'
     console.log @config
 
+    if _.has @config, 'colors'
+      console.log "custom"
+      if ! _.isArray @config.colors
+        throw new Error "Invalid config. 'colors' must be array"
+      if @config.colors.length < 1
+        throw new Error "Invalid config. 'colors' array must be > 0"
+      @colors = @config.colors
+    else
+      @colors = @defaultColors
+
+  _getColor: (index) ->
+    return @colors[index % @colors.length]
 
   _redraw: () ->
     console.log '_redraw. Change this function in your rhtmlWidget'
@@ -22,10 +36,10 @@ class Template extends RhtmlSvgWidget
     console.log @outerSvg
 
     data = [
-      { color: 'red', name: 'red', x: 0, y: 0 }
-      { color: 'blue', name: 'blue', x: @initialWidth / 2, y: 0 }
-      { color: 'green', name: 'green', x: 0, y: @initialHeight / 2 }
-      { color: 'orange', name: 'orange', x: @initialWidth / 2, y: @initialHeight / 2 }
+      { color: @_getColor(0), name: @_getColor(0), x: 0, y: 0 }
+      { color: @_getColor(1), name: @_getColor(1), x: @initialWidth / 2, y: 0 }
+      { color: @_getColor(2), name: @_getColor(2), x: 0, y: @initialHeight / 2 }
+      { color: @_getColor(3), name: @_getColor(3), x: @initialWidth / 2, y: @initialHeight / 2 }
     ]
 
     allCells = @outerSvg.selectAll('.node')
@@ -43,7 +57,7 @@ class Template extends RhtmlSvgWidget
       .attr 'class', 'rect'
 
     enteringCells.append 'text'
-      .attr 'class', 'text'
+      .attr 'class', (d) -> 'text'
 
     @_updateText()
     @_updateRectangles()
@@ -65,6 +79,7 @@ class Template extends RhtmlSvgWidget
         return 60 if d.name == @state.selected
         return 18
       .text (d) -> d.name
+      .attr 'class', (d) -> "text #{d.name}"
       .on 'click', (d) =>
         @partialStateUpdate 'selected', d.name
 

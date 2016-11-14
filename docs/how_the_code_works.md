@@ -7,19 +7,21 @@ The interaction between the R servers, `R_opencpu`, and the `displayr` UI are no
 
 There are several relevant files:
 
-1. `theSrc/R/htmlwidget.r` : defines the R function signature and does some input formatting before invoking the HTML Widget
+1. `theSrc/R/htmlTemplate.r` : defines the R function signature and does some input formatting before invoking the HTML Widget
 1. `theSrc/scripts/rhtmlTemplate.coffee` : registers the `rhtmlWidget` with the HTMLWidget framework. This file is deliberately very light on details and just calls methods on the Template class
 1. `theSrc/scripts/Template.coffee` : defines a class that does all of the work creating the htmlwidget.
 1. `rHtmlStatefulWidget.coffee` : defines the `RhtmlStatefulWidget` class, which provides an interface for setting and getting state from a html widget. This class is meant to be extended by the main widget class using class inheritance.
 1. `rHtmlSvgWidget.coffee` : defines the `RhtmlSvgWidget` class, which provides scaffolding for modifying the outer DOM element and adding a SVG container to the outer DOM. This class is meant to be extended by the main widget class using class inheritance.
 
-## `theSrc/R/htmlwidget.r`
+## `theSrc/R/htmlTemplate.r`
 
 For a simple widget there is not much to be done in the R file. In the `rhtmlTemplate` example the R file parses the JSON string into an object, pulls out the width and height, and calls the `htmlwidgets::createWidget` function to begin the process of rendering the widget. In more complicated widgets, the R file may contain multiple functions that can be used to invoke the htmlwidget in different ways. The R functions can contain parsing logic so that the R functions have simple interfaces that mask the complexity of the underlying widget API from the user.
 
 ## `theSrc/R/rhtmlTemplate.coffee`
 
 The format of this file is pretty strict, not much can or should be changed here. I wanted to structure my complex widget code as a class to gain all of the benefits of OO programming. The htmlwidget interface was not ideally suited for this, so the rhtmlTemplate.coffee file provides a bridge between the class structure I have used in `Template.coffee` and `Pictograph.coffee` with the requirements of the `HTMLWidgets.widget` function signature.
+
+Seperating the widget code into a class also allows us to create widgets without the R interface, which is done by the [internal_www content](/theSrc/internal_www/content).
 
 This wrapper also handles any errors thrown when interacting the the Template class. If an error is thrown, the error will be rendered to the user using the `DisplayError` class, and the error will be "rethrown" so displayr can handle it.
 
@@ -76,4 +78,5 @@ To be called externally by users of your class or called internally by child cla
 * **partialStateUpdate**: Partially replace the widget state, and notify all state watchers
 * **registerStateListener**: Provide a callback function that will be executed every time the state updates. The callback will be invoked with the current state provided as the first and only parameter to the callback.
 
-The [render.html](/theSrc/render.html) provides an example of how an external agent would register as a listener, and how to manually setState during load. Have a read through that source if you are considering hooking into widget state.
+(NB: Out of Date. TODO: update this once renderContentPage.coffee registers as a listener)
+The [renderContentPage.coffee](/theSrc/internal_www/js/renderContentPage.coffee) _will_ provide an example of how an external agent would register as a listener, and how to manually setState during load. Have a read through that source if you are considering hooking into widget state.
