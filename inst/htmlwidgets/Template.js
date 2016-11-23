@@ -11,12 +11,30 @@ Template = (function(_super) {
     this._initializeState({
       selected: null
     });
+    this.defaultColors = ['red', 'blue', 'green', 'orange'];
   }
 
   Template.prototype._processConfig = function() {
     console.log('_processConfig. Change this function in your rhtmlWidget');
     console.log('the config has already been added to the context at @config, you must now "process" it');
-    return console.log(this.config);
+    console.log('@config');
+    console.log(this.config);
+    if (_.has(this.config, 'colors')) {
+      console.log("custom");
+      if (!_.isArray(this.config.colors)) {
+        throw new Error("Invalid config. 'colors' must be array");
+      }
+      if (this.config.colors.length < 1) {
+        throw new Error("Invalid config. 'colors' array must be > 0");
+      }
+      return this.colors = this.config.colors;
+    } else {
+      return this.colors = this.defaultColors;
+    }
+  };
+
+  Template.prototype._getColor = function(index) {
+    return this.colors[index % this.colors.length];
   };
 
   Template.prototype._redraw = function() {
@@ -26,23 +44,23 @@ Template = (function(_super) {
     console.log(this.outerSvg);
     data = [
       {
-        color: 'red',
-        name: 'red',
+        color: this._getColor(0),
+        name: this._getColor(0),
         x: 0,
         y: 0
       }, {
-        color: 'blue',
-        name: 'blue',
+        color: this._getColor(1),
+        name: this._getColor(1),
         x: this.initialWidth / 2,
         y: 0
       }, {
-        color: 'green',
-        name: 'green',
+        color: this._getColor(2),
+        name: this._getColor(2),
         x: 0,
         y: this.initialHeight / 2
       }, {
-        color: 'orange',
-        name: 'orange',
+        color: this._getColor(3),
+        name: this._getColor(3),
         x: this.initialWidth / 2,
         y: this.initialHeight / 2
       }
@@ -52,7 +70,9 @@ Template = (function(_super) {
       return "translate(" + d.x + "," + d.y + ")";
     });
     enteringCells.append('rect').attr('width', this.initialWidth / 2).attr('height', this.initialHeight / 2).attr('class', 'rect');
-    enteringCells.append('text').attr('class', 'text');
+    enteringCells.append('text').attr('class', function(d) {
+      return 'text';
+    });
     this._updateText();
     return this._updateRectangles();
   };
@@ -83,6 +103,8 @@ Template = (function(_super) {
       };
     })(this)).text(function(d) {
       return d.name;
+    }).attr('class', function(d) {
+      return "text " + d.name;
     }).on('click', (function(_this) {
       return function(d) {
         return _this.partialStateUpdate('selected', d.name);

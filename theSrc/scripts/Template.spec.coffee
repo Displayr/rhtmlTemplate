@@ -4,12 +4,18 @@ describe 'Template class:', ->
   beforeEach ->
     @instantiateAndSetConfigTo = (config, width=100, height=100) ->
       @instance = new Template '<div class="outer-container">', width, height
-      @instance.setConfig {}
+      @instance.setConfig config
 
   describe '_processConfig():', ->
 
     it 'accepts an empty config without throwing error', ->
       expect(=> @instantiateAndSetConfigTo({})).not.to.throw()
+
+    it 'throws an error if colors is not an array', ->
+      expect(=> @instantiateAndSetConfigTo({ colors: 'dog' })).to.throw()
+
+    it 'throws an error if colors is an empty array', ->
+      expect(=> @instantiateAndSetConfigTo({ colors: [] })).to.throw()
 
   describe 'e2e tests:', ->
 

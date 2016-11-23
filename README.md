@@ -1,3 +1,5 @@
+# rhtmlTemplate
+
 An R HTMLWidget project template.
 
 # Installation in R
@@ -16,7 +18,7 @@ rhtmlTemplate::template()
 
 **Prerequisites** - For help installing prerequisites see the `Prequisite Installation Help` section below
 
-1. nodejs >= 5.0
+1. nodejs >= 6.0
 1. python 2.7 - one of the nodejs libraries needs python during the installation process
 
 ## Installing the rhtmlTemplate code
@@ -32,9 +34,9 @@ rhtmlTemplate::template()
 1. type `gulp serve` ENTER
     1. If `gulp serve` does not work try `./node_modules/.bin/gulp serve`. To correct this and to make your nodejs life easier you should add `./node_modules/.bin` to your PATH. Consult the Internet for instructions on how to do so on your OS of choice.
 
-If this worked, then the `gulp serve` command opened your browser and you are looking at `http://localhost:9000`. You should see a page listing a bunch of links to examples, each example shows the simple 4 square widget template. These examples are defined in the [features.json file](theSrc/features/features.json).
+If this worked, then the `gulp serve` command opened your browser and you are looking at `http://localhost:9000`. You should see a page listing a bunch of links to examples, each example shows the simple 4 square widget template. These examples are defined in the [internal www content directory](theSrc/internal_www/content).
 
-Choose an example or add another example to [features.json](theSrc/features/features.json). When changes to any file in `./theSrc` are saved, the browser will automatically reload.
+Choose an example or add another example to [the content area](theSrc/internal_www/content) by following the instructions [here](docs/visual_regression_testing_and_the_internal_www_server.md). When changes to any file in `./theSrc` are saved, the browser will automatically reload.
 
 ## Prerequisite Installation Help
 
@@ -42,12 +44,12 @@ Choose an example or add another example to [features.json](theSrc/features/feat
 
 1. Install brew by following instructions here : http://brew.sh/
 1. Install nvm (node version manager) by running `brew install nvm`
-1. Install node by running `nvm install 5.8.0` on the terminal
+1. Install node by running `nvm install 6.1.0` on the terminal
 
 ### Install nodejs on Windows
 
 1. Setup nodist. https://github.com/marcelklehr/nodist and find the link to the official installer.
-1. Open the command prompt. Type: `nodist v5.8.0`
+1. Open the command prompt. Type: `nodist v6.1.0`
 1. Type `node -v` and verify the version is correct
 
 ### Python on OSX - it should come installed. If not
@@ -76,6 +78,7 @@ See docs on the [htmlwidget_build_system](docs/htmlwidget_build_system.md) to un
 * [htmlwidget build system](docs/htmlwidget_build_system.md) - gulp task descriptions and file role breakdown
 * [extending the template](docs/extending_the_template.md) - instructions on using the template to create a new htmlwidget project
 * [how the code works](docs/how_the_code_works.md) - a walkthrough of how the rhtmlTemplate and its successors actually work
+* [visual regression testing and the internal web server](docs/visual_regression_testing_and_the_internal_www_server.md) - a walkthrough of the internal web server and how to run and create visual regression tests
 
 ## R docs
 
