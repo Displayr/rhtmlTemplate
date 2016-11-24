@@ -122,19 +122,7 @@ processRow = () ->
   $(this).find('.example').each () ->
     addExampleTo.bind(this)(rowConfig)
 
-waitForJqueryAndLodash = () ->
-  return new Promise( (resolve) ->
-    waitingInterval = setInterval( () ->
-      if (!window.hasOwnProperty('$') || !window.hasOwnProperty('_'))
-        console.log("waiting for jquery and lodash")
-      else
-        clearInterval(waitingInterval);
-        return resolve()
-    , 50)
-  )
-
-waitForJqueryAndLodash().then () ->
-  $(document).ready ->
-    $('.row').each processRow
-    $('body').attr('loaded', '')
+$(document).ready ->
+  $('.row').each processRow
+  $('body').attr('loaded', '')
 
