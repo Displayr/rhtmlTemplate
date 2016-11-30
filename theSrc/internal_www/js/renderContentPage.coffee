@@ -114,6 +114,17 @@ defaultConfig = {
   exH: 100
 }
 
+addLinkToIndex = () ->
+  indexLinkContainer = $('<div>')
+    .addClass('index-link')
+
+  indexLink = $('<a>')
+    .attr('href', '/')
+    .html('back to index')
+
+  indexLinkContainer.append(indexLink)
+  $('body').prepend(indexLinkContainer)
+
 processRow = () ->
   row = $(this)
 
@@ -123,6 +134,7 @@ processRow = () ->
     addExampleTo.bind(this)(rowConfig)
 
 $(document).ready ->
+  addLinkToIndex()
   $('.row').each processRow
   $('body').attr('loaded', '')
 
