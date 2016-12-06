@@ -22,7 +22,7 @@ The objectives of maintaining a set of internal content for each html widget is 
 
 The internal web server is just hosting all the files in the `browser` area, which is an auto generated section of the repo. Several gulp steps work in conjunction to build the content in the `browser` directory and serve it at http://127.0.0.1:9000. The 'important' ones are described below:
  
-* the `compileCoffee` step converts coffee files in JS and writes them into the `browser/widget` and `browser/js` directory. widget is for your widget code and js is for js files that are specific to the internal web server.
+* the `compileInternalWeb` step compiles ES6 into ES5 for the browser
 * the `copy` step copies all the html and image files from `theSrc/internal_www` into the `browser` area
 * the `buildContentManifest` step recursively scans the `browser/content` area and produces a manifest of all the content files in the area. This is used to build the index page that is displayed on http://127.0.0.1. Without this step the author would need to keep this list up to date by manual updates to the index.html file.
 * the `connect` step starts a static content web server hosting all the files in the `browser` directory and makes them available on port 9000 of localhost (i.e., http://127.0.0.1:9000)
@@ -32,10 +32,9 @@ The internal web server is just hosting all the files in the `browser` area, whi
 
 Using the content file [theSrc/internal_www/content/examples/default.html](/theSrc/internal_www/content/examples/default.html) as an example we will now go through how the widget gets drawn. Note this only applies when viewing a widget at `http://127.0.0.1` (i.e., the **internal** web server). For notes on how htmlwidgets work with R, see [how the code works](./how_the_code_works.md). 
 
-* the [loadDependenciesAndStartRender.js](/theSrc/internal_www/js/loadDependenciesAndStartRender.coffee) script must be loaded on all content pages. This script loads all the javascript dependencies required to render a widget. It then loads [renderContentPage.js](theSrc/internal_www/js/renderContentPage.coffee)
-* the [renderContentPage.js](/theSrc/internal_www/js/renderContentPage.coffee) script scans the HTML content for DOM elements with a `class="row"`. For each row, it then finds all DOM within the row with a `class="example"`. For each example, it takes the content of the DOM, which should be a config for the widget, then calls the widget code with the provided config, passsing the example DOM element as the root element to the widget code. This means the widget code will draw a widget inside the example DOM element.
+* the [renderContentPage.js](/theSrc/internal_www/js/renderContentPage.js) script is a bundled JS file that contains all the widget code, all the dependencies, and some internal web only code that performs the following tasks. The internal web only code, once the page is loaded, scans the HTML content for DOM elements with a `class="row"`. For each row, it then finds all DOM within the row with a `class="example"`. For each example, it takes the content of the DOM, which should be a config for the widget, then calls the widget code with the provided config, passsing the example DOM element as the root element to the widget code. This means the widget code will draw a widget inside the example DOM element.
 
-There are some other features of [renderContentPage.js](/theSrc/internal_www/js/renderContentPage.coffee) that should be discussed:
+There are some other features of [renderContentPage.js](/theSrc/internal_www/js/renderContentPage.js) that should be discussed:
  
 * The default width and height of a widget is 100 x 100. Each row can specify the width and height by using the `data-ex-w` and `data-ex-h` attributes. Similarly each exaple can override the width and height using the same attribtues.
 * By default the config will be drawn on the page above the widget. The config can be hidden by adding the `hide-config` **class** to the example. 
