@@ -3,7 +3,7 @@
 
 ## Overview
 
-(At least some of the) HTML Widgets written by Numbers International are maintained as coffeescript based nodejs projects that use gulp as a task manager. The twofold purpose(s) of these nodejs projects is to produce R HTMLWidget packages, and provide a framework for developing and testing the R htmlwidget pacakges. The [rhtmlTemplate](https://github.com/NumbersInternational/rhtmlTemplate) and [rhtmlPictographs](https://github.com/NumbersInternational/rhtmlPictographs) repositories are examples.
+(At least some of the) HTML Widgets written by Numbers International are maintained as ES2015 (aka ES6) based nodejs projects that use gulp as a task manager. The twofold purpose(s) of these nodejs projects is to produce R HTMLWidget packages, and provide a framework for developing and testing the R htmlwidget pacakges. The [rhtmlTemplate](https://github.com/NumbersInternational/rhtmlTemplate) and [rhtmlPictographs](https://github.com/NumbersInternational/rhtmlPictographs) repositories are examples.
 
 This document starts by listing the gulp `tasks` and why you would use them, then outlines the project structure and the purpose of each file. If this is all new to you you may want to start by jumping ahead to the `Terminology/Technology Breakdown` section, and then come back to the `gulp tasks` and `project structure` sections.
 
@@ -17,7 +17,7 @@ I will once again list the two most important things to remember:
 `gulp build` : simply by running `gulp build` the following tasks are performed :
  - delete the directories that contain auto generated code
  - run the test suite and fail the build if the tests fail
- - transpile the coffeescript into ES5 javascript and place in the dist directories
+ - bundle all the Javascript - including dependencies - into a single file, and transpile the ES6 into ES5 javascript while creating the bundled file
  - compile the LESS into CSS and place in the dist directories
  - copy all images and other resources into the dist directories
  - generate the R docs from the R files and place into the man/ directory
@@ -64,7 +64,7 @@ There are lots of files. This is what they do:
 * **build/config/testVisual.json** - this contains some config parameters for applitools browser snapshotting tool.
 * **build/config/widget.config.json** - this contains the name of the widget and needs to be updated in new projects.
 * **build/scripts/buildContentManifest.js** - utility that (in conjunction with `build/tasks/buildContentManifest.js`) scans the [internal_www](/theSrc/internal_www/content) area writes a list of the content files to this file: `browser/content/contentManifest.json`
-* **build/scripts/convertContentToExamplesInR.coffee** - generate R function signatures for every example in the [internal_www](/theSrc/internal_www/content) area, and save these R signatures in the [examples](/examples) area.
+* **build/scripts/convertContentToExamplesInR.js** - generate R function signatures for every example in the [internal_www](/theSrc/internal_www/content) area, and save these R signatures in the [examples](/examples) area.
 * **build/scripts/makeDoc.r** - utility to generate the R docs via roxygen
 * **build/scripts/testVisual.r** - script to programatically generate test cases from the content in [internal_www](/theSrc/internal_www/content) and take [applitools](https://applitools.com/) snapshots for visual regression testing 
 * **build/tasks/** - Each file in the tasks directory defines a [gulp](http://gulpjs.com/) task
@@ -80,12 +80,12 @@ There are lots of files. This is what they do:
 * **theSrc/internal_www/index.html** - the html entry point that is displayed when you browse to http://localhost:9000/. This lists all of the content in the content directory.
 * **theSrc/internal_www/content** - this area contains all of the examples that are hosted on the internal_www server.
 * **theSrc/internal_www/experiments** - just a html scratch space.
-* **theSrc/internal_www/js/loadDependenciesAndStartRender.coffee** - this script has a list of all the JS dependencies needed to render widget in the internal_www. It loads each of these and then loads [renderContentPage.coffee](/theSrc/internal_www/js/renderContentPage.coffee) which does the actual work.
-* **theSrc/internal_www/js/renderContentPage.coffee** - this script interprets a html file in the content area and calls the widget code to convert the configs into rendered widgets.
+* **theSrc/internal_www/js/renderIndexPage.js** - this script renders the index page using the `contentManifest` file.
+* **theSrc/internal_www/js/renderContentPage.js** - this script interprets a html file in the content area and calls the widget code to convert the configs into rendered widgets.
 * **theSrc/internal_www/styles/internal_www.css** - this script interprets a html file in the content area and calls the widget code to convert the configs into rendered widgets.
 
 **Src Files**
-* **theSrc/scripts/** - This is your coffeescript source. This is what you change. There are more notes on the source code in the [how the code works](./how_the_code_works.md) docs
+* **theSrc/scripts/** - This is your ES6 source. This is what you change. There are more notes on the source code in the [how the code works](./how_the_code_works.md) docs
 * **theSrc/images** - put your images here, you can use them in the browser but at present we dont know how to package images in htmlwidgets !
 * **theSrc/visualRegression** - if you have visual regression tests that require interaction before taking a snapshot, put the test setup scripts here
 * **theSrc/R/htmlwidget.R** - this is copied to R/WIDGETNAME.R and contains the R function definitions used to invoke your widget. _**You do not need to rename this file.**_
@@ -94,7 +94,7 @@ There are lots of files. This is what they do:
 
 **Test Files**
 * **build/config/karma.conf.js** - This file defines the test configuration used by Karma to execute your unit tests
-* **theSrc/scripts/*.spec.coffee** - These are karma test files. See [https://karma-runner.github.io/](https://karma-runner.github.io/) for docs on how to write tests using Karma.
+* **theSrc/scripts/*.spec.js** - These are karma test files. See [https://karma-runner.github.io/](https://karma-runner.github.io/) for docs on how to write tests using Karma.
 * **build/config/protractor.conf.js** - This file defines the test configuration used by [Protractor](http://www.protractortest.org/) to execute the visual regression tests
 * **build/config/protractor.conf.js** - This file defines the test configuration used by [Protractor](http://www.protractortest.org/) to execute the visual regression tests
 * **build/scripts/testVisual.r** - script to programatically generate test cases from the content in [internal_www](/theSrc/internal_www/content) and take [applitools](https://applitools.com/) snapshots for visual regression testing
@@ -109,8 +109,6 @@ What does the above really mean ?
 1. there is a package.json file at the project root, and that package.json file defines all of the nodejs and browser javascript that is required for the project.
 
 Once a git repo has a package.json, then anyone who clones the repo onto their local machine can download all of the project dependencies simply by running `npm install`. This of course assumes that node and npm are already installed.
-
-**Coffeescript**: Ever written a lot of code in ES5 Javascript? It sucks! The newest versions of Javascript - ES6 aka ES2016 - is significantly better, however is was only recently stanrdardized and is not yet universally supported by modern browsers. Coffeescript provides a lot of syntactic sugar and missing language features that makes JS code looks much cleaner and it easier to read, write, and maintina. In this project all 'production' (i.e., code that is included in the R package) javascript code is written as coffeescript and is 'transpiled' into Javascript. There are alternatives that achieve the same aim: A) write in ES6 and transpile into ES5. B) Write in typescript and transpile into ES5. C) Just write ES5 and be sad.
 
 **Transpile ??** : Compiling is generally understood to be converting a higher level of abstraction into a lower one, for example taking C++ and producing X86 assembly code. Transpiling is converting to/from languages of equal levels of abstraction, for example coffeescript to ES5 javascript, or ES6 javascript to ES5 javascript. This is necessary because modern web browsers still do not have consistent 100% support for ES6 (aka ES2015) javascript. At present, if you want your javascript to work in a good percentage of your customers' browsers, then you need to produce ES5. The problem is that ES5 is missing a LOT of modern language features and makes developers sad.
 

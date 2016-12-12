@@ -1,10 +1,5 @@
-'use strict';
 
 const widgetName = require('../../build/config/widget.config.json').widgetName;
-
-const _ = require('lodash');
-const fs = require('fs-extra');
-const path = require('path');
 
 // NB global.visualDiffConfig is set globally in protractor.conf.js
 const eyes = require('../../build/scripts/initializeApplitools').getEyes(global.visualDiffConfig)
