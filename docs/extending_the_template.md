@@ -36,6 +36,7 @@ You will need to modify some files before you get to the coding part. Everything
 * **./DESCRIPTION** - update the widget name
 * **./theSrc/internal_www/js/renderContentPage.js** - change Template in two places so that this file imports and instantiates your widget, not the template widget
 * **./theSrc/R/htmlwidget.R** - update the widget name and keep the R docs up to date
+* **./theSrc/R/htmlwidget.yaml** - change the name of the map file
 * **./theSrc/scripts/rhtmlTemplate.js** - rename file to match your widget name, update the widget name in the file. Note the file name (without the .js extension) must match the widget name specified in the createWidget call in `htmlwidget.R`
 * **./theSrc/scripts/Template.js** - this is the top level class that encapsulates the business logic of the widget. You will need to rename the file to something the makes sense for your widget (e.g., Pictograph), and update most of the file. There are instructions in the file for what needs to stay the same and what should be changed. It is worth reading [how the code works](./how_the_code_works.md) before starting.
 * **./theSrc/scripts/Template.spec.js** - this tests Template.js. You will need to rename it and write some tests.
