@@ -22,6 +22,6 @@ gulp.task('compileES6ToInst', function () {
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(uglify())
-    .pipe(sourcemaps.write('./'))
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('inst/htmlwidgets/'));
 });

@@ -9,7 +9,7 @@ const sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('compileRenderIndexPage', function () {
 
-  return gulp.src('theSrc/internal_www/js/renderContentPage.js', { read: false })
+  return gulp.src('theSrc/internal_www/js/renderIndexPage.js', { read: false })
     .pipe(tap(function (file) {
       gutil.log(`bundling ${file.path}`);
 

@@ -9,7 +9,7 @@ const sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('compileRenderContentPage', function () {
 
-  return gulp.src('theSrc/internal_www/js/renderIndexPage.js', { read: false })
+  return gulp.src('theSrc/internal_www/js/renderContentPage.js', { read: false })
     .pipe(tap(function (file) {
       gutil.log(`bundling ${file.path}`);
 
@@ -19,6 +19,6 @@ gulp.task('compileRenderContentPage', function () {
     }))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(sourcemaps.write('./'))
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('browser/js/'));
 });

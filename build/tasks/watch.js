@@ -16,5 +16,5 @@ gulp.task('watch', ['connect'], function () {
   gulp.watch('theSrc/internal_www/**/*.html', ['copy']);
   gulp.watch('theSrc/internal_www/**/*.css', ['copy']);
   gulp.watch('theSrc/styles/**/*.less', ['less']);
-  gulp.watch('theSrc/internal_www/js/*.js', ['compileInternalWeb']);
+  gulp.watch(['theSrc/internal_www/js/*.js', 'theSrc/scripts/*.js'], ['compileInternalWeb']);
 });
