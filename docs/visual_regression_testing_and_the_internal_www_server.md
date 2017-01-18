@@ -3,6 +3,7 @@
 ## Quick Reference: how to use and extend it
 
 * to run the visual regression suite : `gulp testVisual`
+* to run the visual regression suite on a subset of the examples : `gulp testVisual --specFilter=<PATTERN>`. Only content files matching pattern will be executed.
 * to run the visual regression suite if the web driver binaries are already installed and `gulp serve` is already running: `gulp testVisual_s`
 * to view the visual regression results: login to [https://applitools.com] and look at your new tests.
 * to add a new visual regression test that does not require interaction with the widget:
