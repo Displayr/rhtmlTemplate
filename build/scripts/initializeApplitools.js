@@ -7,14 +7,15 @@ const requiredConfigKeys = [
   'browserWidth',
   'browserHeight',
   'defaultMatchTimeout',
-  'forceFullPageScreenshot'
+  'pageLoadWaitSeconds',
+  'forceFullPageScreenshot',
 ];
 
 module.exports = {
-  getEyes: function(applitoolsConfig) {
+  getEyes: function (applitoolsConfig) {
     _(requiredConfigKeys).each( (requiredKey) => {
       if (!_.has(applitoolsConfig, requiredKey)) {
-        throw new Error(`required applitoolsConfig field ${requiredKey} not specified`)
+        throw new Error(`required applitoolsConfig field ${requiredKey} not specified`);
       }
     })
 
@@ -25,5 +26,5 @@ module.exports = {
     eyes.setDefaultMatchTimeout(applitoolsConfig.defaultMatchTimeout);
 
     return eyes;
-  }
-}
+  },
+};

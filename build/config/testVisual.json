@@ -1,7 +1,8 @@
 {
-  "applitoolsKey": "8jR9y94XQkTaJem9b6mqkYjJkIdO779E99koq103UrPiMI110",
+  "applitoolsKey": "***REMOVED***",
   "browserWidth": 1280,
   "browserHeight": 670,
   "defaultMatchTimeout": 5,
+  "pageLoadWaitSeconds": 5,
   "forceFullPageScreenshot": true
 }
