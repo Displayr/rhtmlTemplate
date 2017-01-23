@@ -16,41 +16,52 @@ if (_.has(global.visualDiffConfig, 'specFilter')) {
   });
 }
 
-let snapshotsCount = 0;
 describe('Take visual regression snapshots', function () {
   beforeEach(function () {
     browser.ignoreSynchronization = true;
   });
 
+  let snapshotsCount = 0;
   _.forEach(contentFiles, (contentPath) => {
     it(`Capturing ${contentPath} visual regression content`, function (done) {
       let openedEyes = false;
 
-      browser.get(contentPath).then(() => {
-        console.log(`Page ${contentPath} is loaded`);
-      }).then(() => {
-        return element.all(by.css('[snapshot-name]')).count();
-      }).then((count) => {
-        if (count > 0) {
-          eyes.open(
-            browser,
-            `${widgetName} ${global.visualDiffConfig.testLabel}`,
-            contentPath,
-            { width: global.visualDiffConfig.browserWidth, height: global.visualDiffConfig.browserHeight },
-          );
-          openedEyes = true;
+      loadPage()
+        .then(conditionallyOpenEyesAndWaitForSnapshotsToLoad)
+        .then(takeSnapshots)
+        .catch(catchAll)
+        .finally(conditionallyCloseEyesAndEndTest);
 
-          console.log(`Waiting ${global.visualDiffConfig.pageLoadWaitSeconds * 1000} seconds for widgetsPage`);
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              return resolve();
-            }, global.visualDiffConfig.pageLoadWaitSeconds * 0);
-          });
-        } else {
-          console.log(`No snapshots on ${contentPath}. Skipping`);
-          return Promise.resolve();
-        }
-      }).then(() => {
+      function loadPage() {
+        return browser.get(contentPath).then(() => {
+          console.log(`Page ${contentPath} is loaded`);
+        });
+      }
+
+      function conditionallyOpenEyesAndWaitForSnapshotsToLoad() {
+        return element.all(by.css('[snapshot-name]')).count().then((count) => {
+          if (count > 0) {
+            const eyesParams = {
+              width: global.visualDiffConfig.browserWidth,
+              height: global.visualDiffConfig.browserHeight,
+            };
+            eyes.open(browser, `${widgetName} ${global.visualDiffConfig.testLabel}`, contentPath, eyesParams);
+            openedEyes = true;
+
+            console.log(`Waiting ${global.visualDiffConfig.pageLoadWaitSeconds * 1000} seconds for widgetsPage`);
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                return resolve();
+              }, global.visualDiffConfig.pageLoadWaitSeconds * 0);
+            });
+          } else {
+            console.log(`No snapshots on ${contentPath}. Skipping`);
+            return Promise.resolve();
+          }
+        });
+      }
+
+      function takeSnapshots() {
         const donePromises = element.all(by.css('[snapshot-name]')).each(function (element) {
           return element.getAttribute('snapshot-name').then((snapshotName) => {
             if (snapshotName) {
@@ -62,17 +73,20 @@ describe('Take visual regression snapshots', function () {
             }
           });
         });
-        return donePromises;
-      }).then(() => {
-        console.log(`done taking snapshots on ${contentPath}. Running snapshot count: ${snapshotsCount}`);
-        if (openedEyes) { eyes.close(false); }
-        done();
-      }).catch((error) => {
+        return donePromises.then(() => {
+          console.log(`done taking snapshots on ${contentPath}. Running snapshot count: ${snapshotsCount}`);
+        });
+      }
+
+      function catchAll(error) {
         console.log('test error:');
         console.log(error);
+      }
+
+      function conditionallyCloseEyesAndEndTest() {
         if (openedEyes) { eyes.close(false); }
         done();
-      });
+      }
     });
   });
 });
