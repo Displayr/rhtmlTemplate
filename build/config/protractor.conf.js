@@ -1,4 +1,4 @@
-'use strict';
+
 
 const _ = require('lodash');
 const testVisualConfig = require('../config/testVisual.json');
@@ -6,24 +6,23 @@ const testVisualConfig = require('../config/testVisual.json');
 exports.config = {
 
   capabilities: {
-    'browserName': 'chrome'
+    browserName: 'chrome',
   },
 
   baseUrl: 'http://localhost:9000',
 
-  onPrepare: function() {
-
+  onPrepare() {
     const validParams = ['testLabel', 'specFilter'];
-    _(validParams).each( (validParam) => {
+    _(validParams).each((validParam) => {
       if (_.has(browser.params, validParam)) {
         testVisualConfig[validParam] = browser.params[validParam];
       }
     });
-    global['visualDiffConfig'] = testVisualConfig;
+    global.visualDiffConfig = testVisualConfig;
   },
 
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 240000
-  }
+    defaultTimeoutInterval: 240000,
+  },
 };

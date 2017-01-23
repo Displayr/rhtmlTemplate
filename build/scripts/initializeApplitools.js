@@ -12,12 +12,12 @@ const requiredConfigKeys = [
 ];
 
 module.exports = {
-  getEyes: function (applitoolsConfig) {
-    _(requiredConfigKeys).each( (requiredKey) => {
+  getEyes(applitoolsConfig) {
+    _(requiredConfigKeys).each((requiredKey) => {
       if (!_.has(applitoolsConfig, requiredKey)) {
         throw new Error(`required applitoolsConfig field ${requiredKey} not specified`);
       }
-    })
+    });
 
     const eyes = new Eyes();
     eyes.setApiKey(applitoolsConfig.applitoolsKey);

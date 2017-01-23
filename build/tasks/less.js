@@ -1,7 +1,7 @@
 const gulp = require('gulp');
+const less = require('gulp-less');
 
 gulp.task('less', function () {
-  var less = require('gulp-less');
   return gulp.src('theSrc/styles/**/*.less')
     .pipe(less({}))
     .pipe(gulp.dest('browser/styles'))

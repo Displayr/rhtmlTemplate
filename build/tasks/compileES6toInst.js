@@ -12,7 +12,6 @@ const widgetEntryPoint = require('../config/widget.config.json').widgetEntryPoin
 gulp.task('compileES6ToInst', function () {
   return gulp.src(widgetEntryPoint, { read: false })
     .pipe(tap(function (file) {
-
       gutil.log(`bundling ${file.path}`);
 
       file.contents = browserify(file.path, { debug: true })
@@ -23,7 +22,7 @@ gulp.task('compileES6ToInst', function () {
         .bundle();
     }))
     .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(uglify())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('inst/htmlwidgets/'));
