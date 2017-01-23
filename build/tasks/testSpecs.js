@@ -1,10 +1,11 @@
 const gulp = require('gulp');
 const path = require('path');
+const karma = require('karma');
 
 gulp.task('testSpecs', function (done) {
-  var Server = require('karma').Server;
+  const Server = karma.Server;
   new Server({
     configFile: path.join(__dirname, '../config/karma.conf.js'),
-    singleRun: true
+    singleRun: true,
   }, done).start();
 });

@@ -8,7 +8,6 @@ const buffer = require('gulp-buffer');
 const sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('compileRenderIndexPage', function () {
-
   return gulp.src('theSrc/internal_www/js/renderIndexPage.js', { read: false })
     .pipe(tap(function (file) {
       gutil.log(`bundling ${file.path}`);
