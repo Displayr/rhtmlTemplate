@@ -11,6 +11,8 @@
     * add a `<div snapshot-name="....">` element that wraps your example(s)
 * to add a new visual regression test that does require interaction with the widget:
     * create a new file in `theSrc/visualRegression` and follow the pattern used in [protractorInteractionExample](/theSrc/visualRegression/protractorInteractionExample.js)
+* where does the applitools key go: place it in a file called `.keys/applitools.key` no formatting, no newlines or spaces, no json, just the key.
+
 
 ## Objectives
 
