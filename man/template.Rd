@@ -4,7 +4,7 @@
 \alias{template}
 \title{rhtmlTemplate HTML Widget}
 \source{
-https://github.com/NumbersInternational/rhtmlTemplate
+https://github.com/Displayr/rhtmlTemplate
 }
 \usage{
 template(settingsJsonString = "{}")
