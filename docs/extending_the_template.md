@@ -18,7 +18,7 @@ New widget time, excellent. It would be great if we had a [yeoman](http://yeoman
             fetch = +refs/heads/*:refs/remotes/origin/*
 ```
 
-1. Go to github and create a new repository called `rhtmlNew` in the Numbers organization
+1. Go to github and create a new repository called `rhtmlNew` in the Displayr organization
 1. Push your new code to rhtmlNew master : `git push origin master`
 
 ## Project Customization
