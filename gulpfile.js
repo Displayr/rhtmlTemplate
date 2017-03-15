@@ -1,37 +1,34 @@
-'use strict';
-
 const Promise = require('bluebird');
 const gulp = require('gulp');
 
 const _ = require('lodash');
-const $ = require('gulp-load-plugins')();
 const fs = Promise.promisifyAll(require('fs-extra'));
-const opn = require('opn')
+const opn = require('opn');
 const runSequence = require('run-sequence');
-
 const widgetConfig = require('./build/config/widget.config.json');
 
-if (!_.has(gulp,'context')) {
+if (!_.has(gulp, 'context')) {
   gulp.context = {
-    widgetName: widgetConfig.widgetName
+    widgetName: widgetConfig.widgetName,
   };
-}
-else {
+} else {
   console.error('Unexpected build failure. gulp already has a context.');
   process.exit(1);
 }
 
-fs.readdirSync('./build/tasks').filter(function(file) {
+fs.readdirSync('./build/tasks').filter(function (file) {
   return (/\.js$/i).test(file);
-}).map(function(file) {
-  require(`./build/tasks/${file}`);
+}).map(function (file) {
+  /* eslint-disable global-require */
+  return require(`./build/tasks/${file}`);
+  /* eslint-enable global-require */
 });
 
 gulp.task('default', function () {
   gulp.start('build');
 });
 
-gulp.task('build', function(done) {
+gulp.task('build', function (done) {
   runSequence('clean', 'core', 'testSpecs', ['makeDocs', 'makeExample'], done);
 });
 
