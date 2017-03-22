@@ -88,15 +88,15 @@ class Template extends RhtmlSvgWidget {
       .style('fill', 'white')
       .style('font-weight', (d) => {
         if (d.name === this.state.selected) {
-          return 900;
+          return '900';
         }
-        return 200;
+        return '200';
       })
       .style('font-size', (d) => {
         if (d.name === this.state.selected) {
-          return 60;
+          return '60px';
         }
-        return 18;
+        return '18px';
       })
       .text(d => d.name)
       .attr('class', d => `text ${d.name}`)
