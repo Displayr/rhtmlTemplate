@@ -1,130 +1,128 @@
 
 import $ from 'jquery';
 import _ from 'lodash';
+/* global window */
+
 // TEMPLATE : you will need to import your widget here
-import Template from '../../scripts/Template';
+import WidgetClass from '../../scripts/Template';
+
+const defaultConfig = {
+  width: 200,
+  height: 200,
+  border: false,
+};
 
 let exampleCounter = 0;
 
-const makeFormHtml = () =>
-  `\
-<form class="resize-form" style="padding-top:10px">
-  <div style="display:block">
-    <label for="width-input">New Width:</label>
-    <input type="text" id="width-input" class="width-input" value="200"/>
-  </div>
-  <div style="display:block">
-    <label for="height-input">New Height:</label>
-    <input type="text" id="height-input" class="height-input" value="200"/>
-  </div>
-  <div style="display:block">
-    <button class="resize-button">Resize</button>
-  </div>
-</form>\
-`
-;
+// NB The window.stateUpdates is used by the visualTesting suite to check what stateCallbacks are made
+window.stateUpdates = [];
+const stateChangedCallback = (newState) => {
+  window.stateUpdates.push(_.clone(newState));
+  console.log(`stateCallback called with state =${JSON.stringify(newState, {}, 2)}`);
+};
 
-const getRelativeResizersHtml = () =>
-  // we are inside a pre so you cant newline these ...
-  `\
-<div style="text-align:center;width:100%">
-  <button class="relative-resize-button more-button">+25</button> <button class="relative-resize-button less-button">-25</button>
-  <button class="relative-resize-button more-width-button">+25 W</button> <button class="relative-resize-button less-width-button">-25 W</button> <button class="relative-resize-button more-height-button">+25 H</button> <button class="relative-resize-button less-height-button">-25 H</button>
-</div>\
-`
-;
+const relativeResizersHtmlSnippet = `
+<div class="relative-resize-container">
+  <button class="relative-resize-button more-button">+25</button>
+  <button class="relative-resize-button less-button">-25</button>
+  <button class="relative-resize-button more-width-button">+25 W</button>
+  <button class="relative-resize-button less-width-button">-25 W</button>
+  <button class="relative-resize-button more-height-button">+25 H</button>
+  <button class="relative-resize-button less-height-button">-25 H</button>
+</div>
+`;
 
-const addExampleTo = function (rowConfig) {
+const addExampleTo = function () {
   const exampleNumber = `example-${exampleCounter++}`;
 
   const element = $(this);
   element.addClass(exampleNumber);
 
-  const exampleConfig = _.defaults($(this).data(), rowConfig);
+  const dataAttributes = _.defaults($(this).data(), defaultConfig);
 
-  const configString = element.text();
-  const templateConfig = JSON.parse(configString);
-  element.empty();
-
-  const configDiv = $('<div>');
-  const configPre = $('<pre>')
-    .attr('class', 'config')
-    .css('height', 'auto')
-    .html(JSON.stringify(templateConfig, {}, 2));
-
-  const innerExampleDiv = $('<div>')
-    .attr('class', 'inner-example')
-    .css('width', `${exampleConfig.exW}`)
-    .css('height', `${exampleConfig.exH}`);
-
-  const innerInnerExampleDiv = $('<div>');
-
-  element.append(configDiv.append(configPre));
-
-  // TEMPLATE : you will need to instantiate your widget here
-  const instance = new Template(innerInnerExampleDiv, exampleConfig.exW, exampleConfig.exH);
-
-  if (exampleConfig.resizeControls) {
-    const relativeResizers = $(getRelativeResizersHtml());
-    element.append(relativeResizers);
-
-    const newResizeHandler = function (additionalWidth, additionalHeight) {
-      return function (event) {
-        event.preventDefault();
-        const newWidth = $(`.${exampleNumber} .inner-example`).width() + additionalWidth;
-        const newHeight = $(`.${exampleNumber} .inner-example`).height() + additionalHeight;
-
-        // @TODO inner-example could be named better
-        $(`.${exampleNumber} .inner-example`)
-          .css('width', newWidth)
-          .css('height', newHeight);
-
-        return instance.resize(newWidth, newHeight);
-      };
-    };
-
-    $(`.${exampleNumber} .more-button`).bind('click', newResizeHandler(25, 25));
-    $(`.${exampleNumber} .less-button`).bind('click', newResizeHandler(-25, -25));
-    $(`.${exampleNumber} .more-width-button`).bind('click', newResizeHandler(25, 0));
-    $(`.${exampleNumber} .less-width-button`).bind('click', newResizeHandler(-25, 0));
-    $(`.${exampleNumber} .more-height-button`).bind('click', newResizeHandler(0, 25));
-    $(`.${exampleNumber} .less-height-button`).bind('click', newResizeHandler(0, -25));
-  }
-
-  element.append(innerExampleDiv.append(innerInnerExampleDiv));
-
-  instance.setConfig(templateConfig);
-  const instanceId = instance.config['table-id'];
-  innerInnerExampleDiv.attr('class', `inner-inner-example ${instanceId}`);
-
-  instance.draw();
-
-  if (exampleConfig.resizeControls) {
-    const resizeForm = $(makeFormHtml());
-    element.append(resizeForm);
-
-    $(`.${exampleNumber} .resize-form`).bind('submit', function (event) {
-      event.preventDefault();
-      console.log('resize submit');
-
-      const width = $(`.${exampleNumber} .width-input`).val();
-      const height = $(`.${exampleNumber} .height-input`).val();
-
-      // @TODO inner-example could be named better
-      $(`.${exampleNumber} .inner-example`)
-        .css('width', width)
-        .css('height', height);
-
-      instance.resize(width, height);
-
-      return false;
+  let configPromise = null;
+  if (_.has(dataAttributes, 'config')) {
+    configPromise = new Promise((resolve, reject) => {
+      $.ajax(`/data/${dataAttributes.config}/config.json`).done(resolve).error(reject);
     });
+  } else {
+    const configString = element.text() || '{}';
+    try {
+      configPromise = JSON.parse(configString);
+    } catch (err) {
+      console.error(`Failed to JSON parse config string: ${configString}`);
+      configPromise = Promise.reject(err);
+    }
   }
-};
 
-const defaultConfig = {
-  exW: 100,
-  exH: 100,
+  let statePromise = null;
+  if (_.has(dataAttributes, 'state')) {
+    statePromise = new Promise((resolve, reject) => {
+      $.ajax(`/data/${dataAttributes.config}/${dataAttributes.state}.json`).done(resolve).error(reject);
+    });
+  } else {
+    statePromise = Promise.resolve({});
+  }
+
+  Promise.all([configPromise, statePromise]).then(([config, state = {}]) => {
+    console.log('loading widget with config');
+    console.log(config);
+
+    console.log('loading widget with state');
+    console.log(state);
+
+    element.empty();
+    let widgetInstance = null;
+
+    if (_.has(dataAttributes, 'showConfig')) {
+      const configPre = $('<pre>')
+        .attr('class', 'config')
+        .css('height', 'auto')
+        .html(JSON.stringify(config, {}, 2));
+
+      element.append(configPre);
+    }
+
+    if (_.has(dataAttributes, 'resizeControls')) {
+      const resizeControls = $(relativeResizersHtmlSnippet);
+      element.append(resizeControls);
+
+      const newResizeHandler = function (additionalWidth, additionalHeight) {
+        return function (event) {
+          event.preventDefault();
+          const newWidth = $(`.${exampleNumber} .inner-example`).width() + additionalWidth;
+          const newHeight = $(`.${exampleNumber} .inner-example`).height() + additionalHeight;
+
+          $(`.${exampleNumber} .inner-example`)
+            .css('width', newWidth)
+            .css('height', newHeight);
+
+          return widgetInstance.resize(newWidth, newHeight);
+        };
+      };
+
+      $(`.${exampleNumber} .more-button`).bind('click', newResizeHandler(25, 25));
+      $(`.${exampleNumber} .less-button`).bind('click', newResizeHandler(-25, -25));
+      $(`.${exampleNumber} .more-width-button`).bind('click', newResizeHandler(25, 0));
+      $(`.${exampleNumber} .less-width-button`).bind('click', newResizeHandler(-25, 0));
+      $(`.${exampleNumber} .more-height-button`).bind('click', newResizeHandler(0, 25));
+      $(`.${exampleNumber} .less-height-button`).bind('click', newResizeHandler(0, -25));
+    }
+
+    const widgetDiv = $('<div class="inner-example">');
+    if (dataAttributes.border) {
+      widgetDiv.addClass('border');
+    }
+    element.append(widgetDiv);
+
+    // TEMPLATE : you will need to instantiate your widget here
+    widgetInstance = new WidgetClass(widgetDiv, dataAttributes.width, dataAttributes.height, stateChangedCallback);
+    widgetInstance.setConfig(config);
+    widgetInstance.setUserState(state);
+    widgetInstance.draw();
+  }).catch((error) => {
+    console.log(error);
+  });
 };
 
 const addLinkToIndex = function () {
@@ -139,19 +137,12 @@ const addLinkToIndex = function () {
   return $('body').prepend(indexLinkContainer);
 };
 
-const processRow = function () {
-  const row = $(this);
-
-  const rowConfig = _.defaults(row.data(), defaultConfig);
-
-  return $(this).find('.example').each(function () {
-    return addExampleTo.bind(this)(rowConfig);
-  });
-};
-
 $(document).ready(function () {
   addLinkToIndex();
-  $('.row').each(processRow);
-  return $('body').attr('loaded', '');
-});
+  $('.example').each(addExampleTo);
+  $('body').attr('loaded', '');
 
+  console.log('adding to window');
+  // NB "export" addExampleTo function so it can be used in renderExample.html
+  window.addExampleTo = addExampleTo;
+});

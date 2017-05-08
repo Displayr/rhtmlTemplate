@@ -4,4 +4,4 @@
 #TL;DR View the tutorial/example the way it was meant to be: in HTML format!
 
 #Default Colors
-rhtmlTemplate::template('{ "initialState": { "selected": "green" } }')
+rhtmlTemplate::template('{}')

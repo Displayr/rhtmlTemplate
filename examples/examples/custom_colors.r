@@ -3,5 +3,8 @@
 #Use these r files for reference, but know that some instructional content is not transferred from the html to the r examples files
 #TL;DR View the tutorial/example the way it was meant to be: in HTML format!
 
-#Custom Colors
+#Custom Colors (Inline)
 rhtmlTemplate::template('{ "colors": ["pink", "blue", "aqua", "brown"] }')
+
+#Custom Colors (File Reference)
+rhtmlTemplate::template('')
