@@ -1,3 +1,4 @@
+/* global HTMLWidgets */
 
 import _ from 'lodash';
 import Template from './Template';
@@ -9,43 +10,46 @@ HTMLWidgets.widget({
   name: 'rhtmlTemplate',
   type: 'output',
 
-  resize(el, width, height, instance) {
-    return instance.resize(width, height);
-  },
-
-  initialize(el, width, height) {
+  factory(element, width, height, stateChangedCallback) {
     // TEMPLATE! - update the class name below to the name of your main class
-    return new Template(el, width, height);
-  },
+    const instance = new Template(element, width, height, stateChangedCallback);
+    return {
+      resize(newWidth, newHeight) {
+        instance.resize(newWidth, newHeight);
+      },
 
-  renderValue(el, incomingConfig, instance) {
-    let config = null;
-    try {
-      if (_.isString(incomingConfig)) {
-        config = JSON.parse(incomingConfig);
-      } else {
-        config = incomingConfig;
-      }
-    } catch (err) {
-      const readableError = new Error(`Template error : Cannot parse 'settingsJsonString': ${err}`);
-      console.error(readableError);
-      const errorHandler = new DisplayError(el, readableError);
-      errorHandler.draw();
-      throw new Error(err);
-    }
+      renderValue(incomingConfig, userState) {
+        let config = null;
+        try {
+          if (_.isString(incomingConfig)) {
+            config = JSON.parse(incomingConfig);
+          } else {
+            config = incomingConfig;
+          }
+        } catch (err) {
+          const readableError = new Error(`Template error : Cannot parse 'settingsJsonString': ${err}`);
+          console.error(readableError);
+          const errorHandler = new DisplayError(element, readableError);
+          errorHandler.draw();
+          throw new Error(err);
+        }
 
-    // @TODO for now ignore the width height that come through from config and use the ones passed to constructor
-    delete config.width;
-    delete config.height;
+        // @TODO for now ignore the width height that come through from config and use the ones passed to constructor
+        // @TODO need to change this to match rhtmlPictograph
+        delete config.width;
+        delete config.height;
 
-    try {
-      instance.setConfig(config);
-      return instance.draw();
-    } catch (err) {
-      console.error(err.stack);
-      const errorHandler = new DisplayError(el, err);
-      errorHandler.draw();
-      throw new Error(err);
-    }
+        try {
+          instance.setConfig(config);
+          instance.setUserState(userState);
+          return instance.draw();
+        } catch (err) {
+          console.error(err.stack);
+          const errorHandler = new DisplayError(element, err);
+          errorHandler.draw();
+          throw new Error(err);
+        }
+      },
+    };
   },
 });

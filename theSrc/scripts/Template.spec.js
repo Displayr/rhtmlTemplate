@@ -1,6 +1,6 @@
 // TEMPLATE! - this import and the tests will need to be changed to match the logic and naming of your widget
-import Template from './Template';
 import $ from 'jquery';
+import Template from './Template';
 
 describe('Template class:', () => {
   beforeEach(function () {

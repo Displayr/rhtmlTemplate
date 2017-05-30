@@ -24,10 +24,6 @@ pre.config {
     margin-bottom: 10px;
 }
 
-.hide-config .config {
-    display: none;
-}
-
 .for-consideration .inner-example {
     border: 4px dashed red;
 }
@@ -36,17 +32,15 @@ pre.config {
     align-self: flex-end;
     flex: 0 0 auto;
     margin: 10px;
-    /*border: 1px dashed dimgrey;*/
-}
-
-.no-border .inner-example {
-    border: none;
 }
 
 .inner-example {
-    border: 1px dashed dimgrey;
     margin-left: auto;
     margin-right: auto;
+}
+
+.inner-example.border {
+    border: 1px dashed dimgrey;
 }
 
 .relative-resize-button {
@@ -54,22 +48,41 @@ pre.config {
 }
 
 .code {
-    font-size: x-small;
     background-color: #eeeeee;
     opacity: 0.6;
+    font-weight: 200;
     border: #cccccc 1px solid;
     border-radius: 2px;
-    font-weight: 200;
-    font: Arial;
+    font-family: Arial;
+}
+
+.code-block {
+    background-color:antiquewhite;
+    opacity: 0.6;
+    display:inline-block;
+    border: #cccccc 1px solid;
+    border-radius: 2px;
+    font-family: Arial;
 }
 
 .note {
     font-size: x-small;
     font-weight: 200;
-    font: Arial;
+    font-family: Arial;
 }
 
 .emphasis {
     font-weight: 900;
-    font: Arial;
+    font-family: Arial;
+}
+
+.relative-resize-container {
+    width: 300px;
+    margin: auto;
+    display: flex;
+}
+
+.relative-resize-button {
+    align-self: flex-end;
+    flex: 0 0 auto;
 }

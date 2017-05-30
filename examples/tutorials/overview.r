@@ -13,4 +13,5 @@
 ##By default the widget will draw a square with 4 sections, where the color scheme used is red, blue, green, orange.
 ##This is shown below.
 ##In all of the content page types, (i.e. tutorials, examples, regression_suites, and bugs/improvements) we can place a widget config inside a section marked with class="example" and this will cause a widget to be drawn!
+##All of the features of the content page are described in example_of_content_page_features.html
 rhtmlTemplate::template('{ "initialState": { "selected": "green" } }')

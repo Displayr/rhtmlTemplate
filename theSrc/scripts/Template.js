@@ -1,16 +1,32 @@
  // TEMPLATE! - update the method signature here
  //  -You will need to update most of this file, as this is where all the specific widget stuff goes
- //  -Simplest way to make a new widget is to extend RhtmlStatefulWidget (which also gives you RhtmlSvgWidget)
- //   then rewrite _processConfig and
+ //  -Consider reusing this._manipulateRootElementSize() and this._addRootSvgToRootElement()
 
+ /* global document */
+
+import $ from 'jquery';
 import _ from 'lodash';
+import * as d3 from 'd3';
 import TemplateDependency from './TemplateDependency';
-import RhtmlSvgWidget from './rhtmlSvgWidget';
 
-class Template extends RhtmlSvgWidget {
+class Template {
 
-  constructor(el, width, height) {
-    super(el, width, height);
+  static initClass() {
+    this.widgetIndex = 0;
+    this.widgetName = 'template';
+  }
+
+  static get defaultColors() {
+    return ['red', 'blue', 'green', 'orange'];
+  }
+
+  constructor(el, width, height, stateChangedCallback) {
+    this.id = `${Template.widgetName}-${Template.widgetIndex++}`;
+    this.rootElement = _.has(el, 'length') ? el[0] : el;
+    this.initialWidth = width;
+    this.initialHeight = height;
+    this.state = {};
+    this.stateChangedCallback = stateChangedCallback;
 
     // NB TemplateDependency is not used,
     // it simply shows how to import and structure intra project dependencies
@@ -18,16 +34,28 @@ class Template extends RhtmlSvgWidget {
     throwAway.doThings();
 
     this.state = {
-      selected: null
+      selected: null,
     };
-
-    this.defaultColors = ['red', 'blue', 'green', 'orange'];
   }
 
-  _processConfig() {
-    console.log('_processConfig. Change this function in your rhtmlWidget');
-    console.log('the config has already been added to the context at @config, you must now "process" it');
-    console.log('config:');
+  resize(width, height) {
+    console.log(`calling resize with w: ${width} h: ${height}`);
+  }
+
+  setUserState(userState = {}) {
+    // TEMPLATE : your widget will need to handle state better
+    // TODO: some sanity checks on provided state, and version check / version upgrade if versions do not match
+
+    if (_.isUndefined(userState) || _.isNull(userState)) {
+      this.state = {};
+    } else {
+      this.state = userState;
+    }
+  }
+
+  setConfig(config) {
+    this.config = config;
+    console.log('setConfig. Change this function in your rhtmlWidget');
     console.log(this.config);
 
     if (_.has(this.config, 'colors')) {
@@ -39,7 +67,7 @@ class Template extends RhtmlSvgWidget {
       }
       this.colors = this.config.colors;
     } else {
-      this.colors = this.defaultColors;
+      this.colors = Template.defaultColors;
     }
   }
 
@@ -47,10 +75,46 @@ class Template extends RhtmlSvgWidget {
     return this.colors[index % this.colors.length];
   }
 
-  _redraw() {
-    console.log('_redraw. Change this function in your rhtmlWidget');
+  draw() {
+    this._manipulateRootElementSize();
+    this._addRootSvgToRootElement();
+    return this._draw();
+  }
+
+  _manipulateRootElementSize() {
+    // root element has width and height in a style tag. Clear that
+    $(this.rootElement).attr('style', '');
+
+    if (this.config.resizable) {
+      return $(this.rootElement).width('100%').height('100%');
+    } else {
+      return $(this.rootElement).width(this.initialWidth).height(this.initialHeight);
+    }
+  }
+
+  _addRootSvgToRootElement() {
+    const anonSvg = $('<svg class="rhtmlwidget-outer-svg">')
+      .attr('id', this.id)
+      .attr('width', '100%')
+      .attr('height', '100%');
+
+    $(this.rootElement).append(anonSvg);
+
+    this.outerSvg = d3.select(anonSvg[0]);
+
+    // NB JQuery insists on lowercasing attributes, so we must use JS directly
+    // when setting viewBox and preserveAspectRatio ?!
+    document.getElementById(this.id).setAttribute('viewBox', `0 0 ${this.initialWidth} ${this.initialHeight}`);
+    if (this.config.preserveAspectRatio) {
+      document.getElementById(this.id).setAttribute('preserveAspectRatio', this.config.preserveAspectRatio);
+    }
+
+    return null;
+  }
+
+  _draw() {
+    console.log('_draw. Change this function in your rhtmlWidget');
     console.log('the outer SVG has already been created and added to the DOM. You should do things with it');
-    console.log(this.outerSvg);
 
     const data = [
       { color: this._getColor(0), name: this._getColor(0), x: 0, y: 0 },
@@ -99,7 +163,13 @@ class Template extends RhtmlSvgWidget {
         return '18px';
       })
       .text(d => d.name)
-      .attr('class', d => `text ${d.name}`)
+      .attr('class', (d) => {
+        const classes = ['text', d.name];
+        if (d.name === this.state.selected) {
+          classes.push('selected');
+        }
+        return classes.join(' ');
+      })
       .on('click', d => this._onClick(d.name));
   }
 
@@ -116,9 +186,18 @@ class Template extends RhtmlSvgWidget {
   }
 
   _onClick(clickedSquareName) {
-    this.state.selected = clickedSquareName;
-    this._redraw();
+    this._updateState({ selected: clickedSquareName });
+    this._draw();
+  }
+
+  _updateState(newState) {
+    this.state = newState;
+    // TEMPLATE: this is an example of calling the state callback when the widget state changed !
+    if (this.stateChangedCallback) {
+      this.stateChangedCallback(this.state);
+    }
   }
 }
+Template.initClass();
 
 module.exports = Template;
