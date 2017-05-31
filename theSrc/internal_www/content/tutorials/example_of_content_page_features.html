@@ -91,6 +91,17 @@
   <pre class="example" data-resize-controls>{ "colors": ["pink", "blue", "aqua", "brown"] }</pre>
 </div>
 
+<p>You can add a rerender control. When you add this control, if you enter a valid config file name (config file referencing rules are described above), and click the rerender button, then the widget <span class="code">renderValue()</span> will be called with the new config and the most recent user state value . In the example below try entering "example1".</p>
+<pre class="code-block">
+  &lt;pre class="example" data-rerender&gt;{}&lt;/pre&gt;
+</pre>
+<br/>
+
+<div snapshot-name="rerender-controls">
+  <pre class="example" data-rerender>{}</pre>
+</div>
+
+
 <ul>
   <li> You can make the text look like <span class="code">this</span></li>
   <li> You can make the text look like <span class="note">this</span></li>

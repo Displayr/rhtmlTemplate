@@ -76,9 +76,14 @@ class Template {
   }
 
   draw() {
+    this._clearRootElement();
     this._manipulateRootElementSize();
     this._addRootSvgToRootElement();
     return this._draw();
+  }
+
+  _clearRootElement() {
+    $(this.rootElement).find('*').remove();
   }
 
   _manipulateRootElementSize() {

@@ -2,7 +2,7 @@
 /* global window */
 
 class BasePage {
-  load({ configName, stateName, width = 1000, height = 1000 }) {
+  load({ configName, stateName, width = 1000, height = 1000, rerender = false }) {
     this.configName = configName;
     this.stateName = stateName;
     this.width = parseInt(width);
@@ -12,10 +12,19 @@ class BasePage {
     if (this.stateName) {
       url += `&state=${this.stateName}`;
     }
+    if (rerender) {
+      url += '&rerender=true';
+    }
+
 
     browser.get(url);
     // TEMPLATE : assumes you are using Template._addRootSvgToRootElement method
     return browser.wait(browser.isElementPresent(by.css('.rhtmlwidget-outer-svg')));
+  }
+
+  rerender({ widgetIndex = 0, configName }) {
+    element(by.css(`.example-${widgetIndex} .rerender-config`)).clear().sendKeys(configName);
+    return element(by.css(`.example-${widgetIndex} .rerender-button`)).click();
   }
 
   getRecentState() {
