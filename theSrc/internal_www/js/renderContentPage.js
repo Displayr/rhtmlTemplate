@@ -21,6 +21,18 @@ const stateChangedCallback = (newState) => {
   console.log(`stateCallback called with state =${JSON.stringify(newState, {}, 2)}`);
 };
 
+const retrieveState = function (configName, stateName) {
+  return new Promise((resolve, reject) => {
+    $.ajax(`/data/${configName}/${stateName}.json`).done(resolve).error(reject);
+  });
+};
+
+const retrieveConfig = function (configName) {
+  return new Promise((resolve, reject) => {
+    $.ajax(`/data/${configName}/config.json`).done(resolve).error(reject);
+  });
+};
+
 const relativeResizersHtmlSnippet = `
 <div class="relative-resize-container">
   <button class="relative-resize-button more-button">+25</button>
@@ -29,6 +41,14 @@ const relativeResizersHtmlSnippet = `
   <button class="relative-resize-button less-width-button">-25 W</button>
   <button class="relative-resize-button more-height-button">+25 H</button>
   <button class="relative-resize-button less-height-button">-25 H</button>
+</div>
+`;
+
+const rerenderHtmlSnippet = `
+<div class="rerender-container">
+  <label for="rerender-config">New Config:</label>
+  <input type="text" name="rerender-config" id="rerender-config" class="rerender-config rerender-element"/>
+  <button class="rerender-button rerender-element">Rerender</button>
 </div>
 `;
 
@@ -42,9 +62,7 @@ const addExampleTo = function () {
 
   let configPromise = null;
   if (_.has(dataAttributes, 'config')) {
-    configPromise = new Promise((resolve, reject) => {
-      $.ajax(`/data/${dataAttributes.config}/config.json`).done(resolve).error(reject);
-    });
+    configPromise = retrieveConfig(dataAttributes.config);
   } else {
     const configString = element.text() || '{}';
     try {
@@ -57,9 +75,7 @@ const addExampleTo = function () {
 
   let statePromise = null;
   if (_.has(dataAttributes, 'state')) {
-    statePromise = new Promise((resolve, reject) => {
-      $.ajax(`/data/${dataAttributes.config}/${dataAttributes.state}.json`).done(resolve).error(reject);
-    });
+    statePromise = retrieveState(dataAttributes.config, dataAttributes.state);
   } else {
     statePromise = Promise.resolve({});
   }
@@ -107,6 +123,28 @@ const addExampleTo = function () {
       $(`.${exampleNumber} .less-width-button`).bind('click', newResizeHandler(-25, 0));
       $(`.${exampleNumber} .more-height-button`).bind('click', newResizeHandler(0, 25));
       $(`.${exampleNumber} .less-height-button`).bind('click', newResizeHandler(0, -25));
+    }
+
+    if (_.has(dataAttributes, 'rerender')) {
+      const rerenderControls = $(rerenderHtmlSnippet);
+      element.append(rerenderControls);
+
+      const rerenderHandler = function (event) {
+        event.preventDefault();
+        const newConfigName = $(`.${exampleNumber} .rerender-config`).val();
+        console.log(`newConfig: ${newConfigName}`);
+
+        retrieveConfig(newConfigName).then((newConfig) => {
+          widgetInstance.setConfig(newConfig);
+          widgetInstance.setUserState(window.stateUpdates[window.stateUpdates.length - 1]);
+          widgetInstance.draw();
+        }).catch((error) => {
+          console.error('Error in rerender:');
+          console.error(JSON.stringify(error));
+        });
+      };
+
+      $(`.${exampleNumber} .rerender-button`).bind('click', rerenderHandler);
     }
 
     const widgetDiv = $('<div class="inner-example">');

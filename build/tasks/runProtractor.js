@@ -25,6 +25,10 @@ gulp.task('runProtractor', function (done) {
     args.push('--params.applitools=off');
   }
 
+  if (cliArgs.logs) {
+    args.push('--params.logs');
+  }
+
   gulp.src(['.tmp/snapshots.feature', 'bdd/features/**/*.feature'])
     .pipe($.protractor.protractor({
       configFile: path.join(__dirname, '../config/protractor.conf.js'),

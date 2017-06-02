@@ -2,7 +2,6 @@
 Feature: State Interactions
   Interaction should cause a state callback, and when I rerender with that new state value, I should see the same state as caused by the interaction
 
-  @foo
   Scenario: User can drag a click a rectangle
     Given I am viewing "default_template_widget" with dimensions 400x400
     Then the "default_template_widget" snapshot matches the baseline
@@ -14,3 +13,4 @@ Feature: State Interactions
   Scenario: User state is saved on next reload
     Given I am viewing "default_template_widget" with state "blue_square_selected" and dimensions 400x400
     Then the "default_template_widget_blue_square_selected" snapshot matches the baseline
+

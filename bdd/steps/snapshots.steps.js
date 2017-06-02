@@ -8,7 +8,7 @@ module.exports = function () {
 
   this.Then(/^the "(.*)" snapshot matches the baseline$/, function (snapshotName) {
     if (isApplitoolsEnabled()) {
-      const selectorExpression = '#render-example-container';
+      const selectorExpression = '.rhtmlwidget-outer-svg';
       return wrapInPromiseAndLogErrors(() => {
         return this.eyes.checkRegionBy(by.css(selectorExpression), snapshotName);
       });
