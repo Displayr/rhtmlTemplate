@@ -91,7 +91,7 @@ Some notes on the above:
 
 ```
   this.When(/^I click the "([^"]+)" square$/, function (squareName) {
-    return this.context.widget.selectSquare(squareName);
+    return this.context.templatePageObject.selectSquare(squareName);
   });
 ```
 
