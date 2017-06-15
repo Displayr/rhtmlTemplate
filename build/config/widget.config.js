@@ -1,6 +1,9 @@
 module.exports = {
-  widgetClassFile: 'theSrc/scripts/Template.js',
   widgetEntryPoint: 'theSrc/scripts/rhtmlTemplate.js',
   widgetName: 'rhtmlTemplate',
-  rFunction: 'rhtmlTemplate::template'
+  visualRegressionSuite: {
+    applitools: {
+      defaultMatchTimeout: 2
+    }
+  }
 }
