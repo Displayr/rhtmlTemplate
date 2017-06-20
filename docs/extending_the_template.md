@@ -23,19 +23,15 @@ New widget time, excellent. It would be great if we had a [yeoman](http://yeoman
 
 ## Project Customization
 
-To make sure you are starting from a good base before making changes, you should make sure rhtmlTemplate is working (i.e., follow the [Local Installation to Develop/Contribute](../README.md) instructions starting at the `npm install` step). To make sure rhtmlTemplate is working run `gulp serve`, and check some of the examples. You should see a square with 4 colored squares. Once you see the square you know that your environment can build and serve widgets. To be thorough you also need to verify that your environment can run the tests. Run `gulp testSpecs`, look at the output. It should say something like `4 of 4 tests passed`. Now run `gulp testVisual`. This will take a while as the test snapshots some templates. If there are no errors during this process then your environment is good to go! 
+To make sure you are starting from a good base before making changes, you should make sure rhtmlTemplate is working (i.e., follow the [Local Installation to Develop/Contribute](../README.md) instructions starting at the `yarn install` step). To make sure rhtmlTemplate is working run `gulp serve`, and check some of the examples. You should see a square with 4 colored squares. Once you see the square you know that your environment can build and serve widgets. To be thorough you also need to verify that your environment can run the tests. Run `gulp testSpecs`, look at the output. It should say something like `4 of 4 tests passed`. Now run `gulp testVisual`. This will take a while as the test snapshots some templates. If there are no errors during this process then your environment is good to go! 
 
 Next delete the auto generated directories, so that no old files get carried over. Run `gulp clean` to delete all the auto generated content, i.e., [`browser`, `inst`, `man`, `R`, `examples`]. Making a local commit at this point is a good idea so you can return to this point if the next steps do not work as you expected.
 
 You will need to modify some files before you get to the coding part. Everything that needs to be changed should have a comment starting with `TEMPLATE`. These locations are listed below:
 
-* **./bdd/pageObjects/base.page.js** - You do not need to modify this now, but if you change how your widget entry point - the class that creates your SVG area - you will need to update the CSS selector in this file. Make a note of it.
 * **./bdd/pageObjects/template.page.js** - This is the page object you use to interact with your widget during BDD tests. You will need to rename this file and modify its content while you develop tests
 * **./bdd/steps/setup.steps.js** - This file references your testing page object (currently template.page.js). You will need to update this reference once you rename the testing page object.
-* **./build/config/widget.config.json** - update the widget name and the R function name. This config is used by the following files, therefore you shouldn't have to update any of these files:
-    * ./gulpfile.js
-    * ./build/scripts/convertContentToExampleInR.js
-    * ./build/scripts/testVisual.js
+* **./build/config/widget.config.json** - update the widget name and the R function name. This config is used by the rhtmlBuildUtils tasks to build your widget (the file is documented [here](https://github.com/Displayr/rhtmlBuildUtils/tree/more-docs#customisation)
 * **./DESCRIPTION** - update the widget name
 * **./theSrc/internal_www/js/renderContentPage.js** - change Template in two places so that this file imports and instantiates your widget, not the template widget
 * **./theSrc/R/htmlwidget.R** - update the widget name and keep the R docs up to date
@@ -49,9 +45,3 @@ That should be it. If you follow the instructions above you should not have to c
 Final note you should delete the template docs out of the `docs/` folder and you are responsible for keeping the `README.md` of your new project up to date!
 
 Happy coding :)
-
-## Adding a new JS dependency
-Currently the rhtmlTemplate uses `lodash`, `jquery`, and `d3` as JS dependencies. These dependencies are listed in `package.json`, and installed when you run `npm install`. They are imported by the `.js` files that require them, in our case [Template.js](/theSrc/scripts/Template.js) uses uses all three. Note that dependencies are "bundled" with our code into a single minified dist file using `browserify`. This is discussed in the [htmlwidget build system](./htmlwidget_build_system.md) docs. If you need to add package X to your new widget, here are the steps:
-
-1. Install the module from npm and save it to the list of dependencies via `npm install --save X`. This will install the module locally in node_modules, and it will add it to the list of project dependencies in `package.json`
-1. use the `import` command in the file that requires the module to import the module.

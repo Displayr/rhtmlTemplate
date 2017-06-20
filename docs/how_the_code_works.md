@@ -27,7 +27,7 @@ Any htmlwidget using the new interface (i.e, calling HTMLWidgets.widget with an 
 
 So as said not much flexibility in this file, most customization occurs in your main class (in our case `Template.js`).
 
-Seperating the widget code into a class (i.e., `Template.js`) also allows us to create widgets without the R interface, which is important for quick testing in a browser context. This is done by the [internal_www content framework](/docs/visual_regression_testing_and_the_internal_www_server.md).
+Seperating the widget code into a class (i.e., `Template.js`) also allows us to create widgets without the R interface, which is important for quick testing in a browser context.
 
 The `rhtmlTemplate.js` wrapper also handles any errors thrown when interacting the the Template class. If an error is thrown, the error will be rendered to the user using the `DisplayError` class, and the error will be "rethrown" so displayr can handle it.
 
