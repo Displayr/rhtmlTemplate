@@ -4,7 +4,8 @@
     "node": ">=6.9.5"
   },
   "scripts": {
-    "prepush": "node ./bin/prepush"
+    "prepush": "node ./bin/prepush",
+    "test": "gulp testSpecs"
   },
   "devDependencies": {
     "gulp": "3.9.1",
