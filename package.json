@@ -4,12 +4,13 @@
     "node": ">=6.9.5"
   },
   "scripts": {
-    "prepush": "node ./bin/prepush"
+    "prepush": "node ./bin/prepush",
+    "test": "gulp testSpecs && gulp testVisual"
   },
   "devDependencies": {
     "gulp": "3.9.1",
     "husky": "^0.13.3",
-    "rhtmlBuildUtils": "Displayr/rhtmlBuildUtils#1.1.4"
+    "rhtmlBuildUtils": "Displayr/rhtmlBuildUtils#1.1.5"
   },
   "dependencies": {
     "d3": "4.7.2",
