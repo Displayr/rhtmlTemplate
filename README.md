@@ -90,6 +90,43 @@ rhtmlTemplate relies heavily on [rhtmlBuildUtils](https://github.com/Displayr/rh
 1. Do not work in master, as the master branch of rhtmlTemplate is used to verify the R server build process.
 1. Create a branch, make some changes, add test for your changes, update the docs if necessary, push your branch, and create a pull request on github.
 
+## How the git prepush hook works (aka: My git push got rejected ?!)
+
+This project uses the npm [husky](https://github.com/typicode/husky) module to add git lifecycle hooks to the project. These are defined in the `scripts` section of the [package.json](./package.json) file.
+ 
+Of particular interest is the `prepush` entry which runs a script that checks the project code style using the `gulp lint` command. If there are errors, then it will reject your git push command. You have two options:
+  
+1. Fix the errors and try pushing again. To see which errors are in the code run `gulp lint`. To autofix as many as possible run `gulp lint --fix`; this will only report the errors it could not auto-fix. Don't forget to commit your code again before pushing.
+1. If you must (not recommended) add a --no-verify (i.e., `git push origin head --no-verify`) to skip the style checking.
+
+Here is an illustrative sequence:
+
+```bash
+Kyles-MBP:rhtmlTemplate kyle$ git push origin head
+
+> husky - npm run -s prepush
+
+...
+
+/Users/kyle/projects/numbers/rhtmlTemplate/bdd/steps/loadThePage.steps.js
+  8:47  error  Missing semicolon  semi
+
+✖ 1 problem (1 error, 0 warnings)
+
+[17:50:09] 'lint' errored after 4.85 s
+
+...
+
+Kyles-MBP:rhtmlTemplate kyle$ gulp lint --fix
+[17:50:16] Starting 'lint'...
+[17:50:21] Finished 'lint' after 4.94 s
+
+Kyles-MBP:rhtmlTemplate kyle$ git commit -a -m 'fix the style'
+...
+
+Kyles-MBP:rhtmlTemplate kyle$ git push origin head
+```
+
 # Docs
 
 **Doc manifest**
