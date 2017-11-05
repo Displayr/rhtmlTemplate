@@ -1,0 +1,10 @@
+{
+  "widgetEntryPoint": "theSrc/scripts/rhtmlTemplate.js",
+  "widgetFactory": "theSrc/scripts/rhtmlTemplate.factory.js",
+  "widgetName": "rhtmlTemplate",
+  "visualRegressionSuite": {
+    "applitools": {
+      "defaultMatchTimeout": 2
+    }
+  }
+}

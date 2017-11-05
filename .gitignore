@@ -7,4 +7,4 @@ browser
 *.Rproj
 .idea
 .keys
-.tmp/snapshots.feature
+.tmp

@@ -10,9 +10,10 @@
   "devDependencies": {
     "gulp": "3.9.1",
     "husky": "^0.13.3",
-    "rhtmlBuildUtils": "Displayr/rhtmlBuildUtils#1.1.5"
+    "rhtmlBuildUtils": "Displayr/rhtmlBuildUtils#2.0.0"
   },
   "dependencies": {
+    "babel-polyfill": "6.26.0",
     "d3": "4.7.2",
     "es6-promise": "^3.2.1",
     "jquery": "2.2.2",

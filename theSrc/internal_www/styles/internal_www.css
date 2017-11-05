@@ -24,7 +24,7 @@ pre.config {
     margin-bottom: 10px;
 }
 
-.for-consideration .inner-example {
+.for-consideration .widget-container {
     border: 4px dashed red;
 }
 
@@ -34,12 +34,12 @@ pre.config {
     margin: 10px;
 }
 
-.inner-example {
+.widget-container {
     margin-left: auto;
     margin-right: auto;
 }
 
-.inner-example.border {
+.widget-container.border {
     border: 1px dashed dimgrey;
 }
 
