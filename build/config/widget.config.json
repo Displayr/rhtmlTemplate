@@ -2,9 +2,12 @@
   "widgetEntryPoint": "theSrc/scripts/rhtmlTemplate.js",
   "widgetFactory": "theSrc/scripts/rhtmlTemplate.factory.js",
   "widgetName": "rhtmlTemplate",
-  "visualRegressionSuite": {
-    "applitools": {
-      "defaultMatchTimeout": 2
-    }
+  "visualRegressionSuite": {},
+  "internalWebSettings": {
+    "includeDimensionsOnWidgetDiv": true,
+    "default_border": false,
+    "css": [],
+    "isReadySelector": "svg[rhtmlTemplate-status=ready]",
+    "singleWidgetSnapshotSelector": "#widget-container"
   }
 }
