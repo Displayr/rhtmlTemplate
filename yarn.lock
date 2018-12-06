@@ -3441,13 +3441,13 @@ jasminewd2@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/jasminewd2/-/jasminewd2-2.1.0.tgz#da595275d1ae631de736ac0a7c7d85c9f73ef652"
 
-jquery@2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.2.tgz#3e302dc61eb329a21e9efac937d731f061134c59"
-
 jquery@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
+
+jquery@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-string-escape@^1.0.0:
   version "1.0.1"
@@ -3889,10 +3889,6 @@ lodash.uniq@^4.3.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@4.6.1:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.6.1.tgz#df00c1164ad236b183cfc3887a5e8d38cc63cbbc"
-
 lodash@^3.10.1, lodash@^3.8.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
@@ -3900,6 +3896,10 @@ lodash@^3.10.1, lodash@^3.8.0:
 lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.0:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
+
+lodash@^4.17.11:
+  version "4.17.11"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
 lodash@~1.0.1:
   version "1.0.2"
@@ -4960,79 +4960,6 @@ restore-cursor@^1.0.1:
   dependencies:
     exit-hook "^1.0.0"
     onetime "^1.0.0"
-
-rhtmlBuildUtils@Displayr/rhtmlBuildUtils#2.0.0:
-  version "2.0.0"
-  resolved "https://codeload.github.com/Displayr/rhtmlBuildUtils/tar.gz/eed903832e7cad377d89651dd27220e591d96b4c"
-  dependencies:
-    app-root-dir "^1.0.2"
-    babel-plugin-array-includes "^2.0.3"
-    babel-plugin-transform-exponentiation-operator "^6.24.1"
-    babel-plugin-transform-object-assign "^6.8.0"
-    babel-preset-es2015-ie "^6.6.2"
-    babelify "^7.3.0"
-    bluebird "^3.5.0"
-    browserify "^14.4.0"
-    chai "^3.5.0"
-    chai-as-promised "^5.3.0"
-    chai-dom "^1.4.0"
-    connect "^3.6.2"
-    connect-livereload "^0.6.0"
-    cucumber "^1.2.1"
-    dot-object "^1.5.4"
-    eslint "^3.19.0"
-    eslint-config-airbnb "^15.0.1"
-    eslint-config-standard "^10.2.1"
-    eslint-plugin-import "^2.3.0"
-    eslint-plugin-jsx-a11y "^5.0.3"
-    eslint-plugin-node "^5.0.0"
-    eslint-plugin-promise "^3.5.0"
-    eslint-plugin-react "^7.0.1"
-    eslint-plugin-standard "^3.0.1"
-    eyes.selenium "0.0.63"
-    fs-extra "^3.0.1"
-    gulp "^3.9.1"
-    gulp-buffer "0.0.2"
-    gulp-eslint "^3.0.1"
-    gulp-exit "0.0.2"
-    gulp-if "^2.0.2"
-    gulp-less "^3.3.0"
-    gulp-livereload "^3.8.1"
-    gulp-load-plugins "^1.5.0"
-    gulp-protractor "^4.0.0"
-    gulp-rename "^1.2.2"
-    gulp-sourcemaps "^2.6.0"
-    gulp-tap "^1.0.1"
-    gulp-uglify "^3.0.0"
-    gulp-util "^3.0.8"
-    husky "^0.13.4"
-    jquery "^3.2.1"
-    karma "^1.6.0"
-    karma-browserify "^5.1.1"
-    karma-chai "^0.1.0"
-    karma-chai-as-promised "^0.1.2"
-    karma-chai-dom "^1.1.0"
-    karma-chrome-launcher "^2.0.0"
-    karma-mocha "^1.3.0"
-    karma-mocha-reporter "^2.2.3"
-    karma-sinon "^1.0.5"
-    karma-sinon-chai "^1.3.1"
-    lodash "^4.17.4"
-    mocha "^3.2.0"
-    mustache "^2.3.0"
-    opn "^5.0.0"
-    path "^0.12.7"
-    protractor-cucumber-framework "^1.0.1"
-    recursive-readdir-sync "^1.0.6"
-    request-promise "^4.2.1"
-    run-sequence "^1.2.2"
-    serve-index "^1.9.0"
-    serve-static "^1.12.3"
-    shelljs "^0.7.7"
-    sinon "^2.1.0"
-    sinon-chai "^2.9.0"
-    stream "0.0.2"
-    yargs "^8.0.1"
 
 rhtmlBuildUtils@Displayr/rhtmlBuildUtils#2.0.1:
   version "2.0.1"
