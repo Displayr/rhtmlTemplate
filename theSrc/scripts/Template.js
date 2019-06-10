@@ -1,8 +1,8 @@
- // TEMPLATE! - update the method signature here
- //  -You will need to update most of this file, as this is where all the specific widget stuff goes
- //  -Consider reusing this._manipulateRootElementSize() and this._addRootSvgToRootElement()
+// TEMPLATE! - update the method signature here
+//  -You will need to update most of this file, as this is where all the specific widget stuff goes
+//  -Consider reusing this._manipulateRootElementSize() and this._addRootSvgToRootElement()
 
- /* global document */
+/* global document */
 
 import $ from 'jquery'
 import _ from 'lodash'
@@ -134,8 +134,8 @@ class Template {
 
     const enteringCells = allCells.enter()
       .append('g')
-        .attr('class', 'node')
-        .attr('transform', d => `translate(${d.x},${d.y})`)
+      .attr('class', 'node')
+      .attr('transform', d => `translate(${d.x},${d.y})`)
 
     enteringCells.append('rect')
       .attr('width', this.initialWidth / 2)
