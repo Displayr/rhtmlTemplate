@@ -8,15 +8,12 @@ import $ from 'jquery'
 import _ from 'lodash'
 import * as d3 from 'd3'
 import TemplateDependency from './TemplateDependency'
+import { buildConfig } from './buildConfig'
 
 class Template {
   static initClass () {
     this.widgetIndex = 0
     this.widgetName = 'template'
-  }
-
-  static get defaultColors () {
-    return ['red', 'blue', 'green', 'orange']
   }
 
   constructor (el, width, height, stateChangedCallback) {
@@ -53,25 +50,13 @@ class Template {
   }
 
   setConfig (config) {
-    this.config = config
+    this.config = buildConfig(config)
     console.log('setConfig. Change this function in your rhtmlWidget')
     console.log(this.config)
-
-    if (_.has(this.config, 'colors')) {
-      if (!_.isArray(this.config.colors)) {
-        throw new Error("Invalid config. 'colors' must be array")
-      }
-      if (this.config.colors.length < 1) {
-        throw new Error("Invalid config. 'colors' array must be > 0")
-      }
-      this.colors = this.config.colors
-    } else {
-      this.colors = Template.defaultColors
-    }
   }
 
   _getColor (index) {
-    return this.colors[index % this.colors.length]
+    return this.config.colors[index % this.config.colors.length]
   }
 
   draw () {
@@ -155,19 +140,15 @@ class Template {
       .attr('y', () => this.initialHeight / 4) // same midpoint consideration
       .style('text-anchor', 'middle')
       .style('dominant-baseline', 'central')
-      .style('fill', 'white')
-      .style('font-weight', (d) => {
-        if (d.name === this.state.selected) {
-          return '900'
-        }
-        return '200'
-      })
-      .style('font-size', (d) => {
-        if (d.name === this.state.selected) {
-          return '60px'
-        }
-        return '18px'
-      })
+      .style('fill', this.config.fontColor)
+      .style('font-weight', d => (d.name === this.state.selected)
+        ? this.config.fontSelectedWeight
+        : this.config.fontWeight
+      )
+      .style('font-size', d => (d.name === this.state.selected)
+        ? this.config.fontSelectedSize
+        : this.config.fontSize
+      )
       .text(d => d.name)
       .attr('class', (d) => {
         const classes = ['text', d.name]
