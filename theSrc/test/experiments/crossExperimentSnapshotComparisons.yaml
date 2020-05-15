@@ -1,0 +1,11 @@
+crossExperimentSnapshotComparisons:
+  - name: wee font size vs blue font color
+    experimentA: varyFontSize
+    configA: wee
+    experimentB: varyFontColor
+    configB: blue
+  - name: huge font size vs white font color
+    experimentA: varyFontSize
+    configA: huge
+    experimentB: varyFontColor
+    configB: white

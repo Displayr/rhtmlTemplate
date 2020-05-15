@@ -1,0 +1,27 @@
+{
+  "dimensions": [
+    ["wee", "current", "big", "huge"]
+  ],
+  "baseline": {
+    "name": "baseline",
+    "override": {}
+  },
+  "experiments": [
+    {
+      "name": "wee",
+      "override": {"fontSize": "10px", "fontWeight": "100"}
+    },
+    {
+      "name": "current",
+      "override": {}
+    },
+    {
+      "name": "big",
+      "override": {"fontSize": "32px", "fontWeight": "400"}
+    },
+    {
+      "name": "huge",
+      "override": {"fontSize": "48px", "fontWeight": "700"}
+    }
+  ]
+}

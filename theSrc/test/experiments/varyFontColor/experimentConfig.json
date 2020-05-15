@@ -1,0 +1,31 @@
+{
+  "dimensions": [
+    ["white", "red", "green", "blue"]
+  ],
+  "experiments": [
+    {
+      "name": "white",
+      "override": {
+        "fontColor": "white"
+      }
+    },
+    {
+      "name": "red",
+      "override": {
+        "fontColor": "red"
+      }
+    },
+    {
+      "name": "green",
+      "override": {
+        "fontColor": "green"
+      }
+    },
+    {
+      "name": "blue",
+      "override": {
+        "fontColor": "blue"
+      }
+    }
+  ]
+}

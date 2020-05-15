@@ -1,0 +1,7 @@
+type: multi_widget_multi_page
+width: 400
+height: 400
+rowSize: 4
+configs:
+  - config: config.experiment_variable_config|data.red_theme
+  - config: config.experiment_variable_config|data.blue_theme

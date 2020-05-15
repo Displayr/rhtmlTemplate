@@ -1,0 +1,12 @@
+type: multi_widget_multi_page
+width: 400
+height: 400
+rowSize: 4
+configs:
+  - config: config.experiment_variable_config|data.red_theme
+    note: I added this note in the testplan.yaml in the experiment directory
+    status: green
+  - config: config.experiment_variable_config|data.blue_theme
+    note: As an example lets assume that this snapshot comparisons shows me an issue that I need to address. Ill mark its status as red
+    status: red
+  - config: config.experiment_variable_config|config.default
