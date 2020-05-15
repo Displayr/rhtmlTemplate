@@ -1,0 +1,52 @@
+const { snapshotTesting: { puppeteer, renderExamplePageTestHelper } } = require('rhtmlBuildUtils')
+
+const {
+  configureImageSnapshotMatcher,
+  puppeteerSettings,
+  testSnapshots,
+  jestTimeout
+} = renderExamplePageTestHelper
+const loadWidget = require('../lib/loadWidget.helper')
+
+/* global jest */
+jest.setTimeout(jestTimeout)
+configureImageSnapshotMatcher('multipleRerender')
+
+describe('multiple render tests', () => {
+  let browser
+
+  beforeEach(async () => {
+    browser = await puppeteer.launch(puppeteerSettings)
+  })
+
+  afterEach(async () => {
+    await browser.close()
+  })
+
+  test('rerender works', async function () {
+    const originalConfig = 'config.default'
+    const newConfig = 'config.default|data.different_colors'
+
+    const { page } = await loadWidget({
+      browser,
+      configName: originalConfig,
+      width: 1000,
+      height: 600,
+      rerenderControls: true
+    })
+
+    await testSnapshots({ page, snapshotName: 'initial' })
+
+    await page.evaluate(() => { document.querySelector('.example-0 .rerender-config').value = '' })
+    await page.type('.example-0 .rerender-config', newConfig, { delay: 0 })
+    await page.click('.rerender-button')
+
+    await page.waitForFunction(selectorString => {
+      return document.querySelectorAll(selectorString).length
+    }, { timeout: 10000 }, 'body[widgets-ready], .rhtml-error-container')
+
+    await testSnapshots({ page, snapshotName: 'final' })
+
+    await page.close()
+  })
+})

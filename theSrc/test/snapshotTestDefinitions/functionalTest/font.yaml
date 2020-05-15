@@ -1,0 +1,9 @@
+type: multi_widget_single_page
+title: "test"
+width: 400
+height: 400
+rowSize: 4
+widgets:
+  - config: 'config.default'
+  - config: 'config.default|{"fontSize":"32px","fontWeight":"600"}'
+  - config: 'config.default|{"fontColor":"red"}'

@@ -8,49 +8,32 @@
 <script src="/js/renderIndexPage.js"></script>
 
 <h2>The Internal WWW Server</h2>
-<p>
+
   <span class="note">Delete this description in your new widget repo</span><br/>
-  This internal WWW server hosts content that allows you to see your work while making updates to the html widget.<br/>
-  There are currently 5 content sections, 4 of them use the same renderer: <span class="code">js/renderContentPage.js</span> to convert the configs in the HTML into actual wrking HTML widgets<br/>
-  The 5th space is 'experiements', which is nothing more than statically hosted free form HTML with no processing.<br/>
-  <br/>
-  This logical grouping of content was useful in the rhtmlPictograph project and it might be useful for you.<br/>
-  Though the Tutorial, Examples, Visual Regression Suite, and Bugs and Improvements sections below serve different purposes, under the hood they are all using the same renderer;<br/>
-  there is no reason you cant just add all content to one or structure things in a different way.<br/>
 
-  Any content within the 'internal_www/content' area will be snapshotted by the visual regression suite if the HTML content contains a <span class="code">snapshot-name="NAME"</span> html attribute.<br/>
-  When you run <span class="code">gulp testVisual</span> a snapshot will be taken of every piece of content marked with the <span class="code">snapshot-name="NAME"</span> html attribute.<br/>
-</p>
+  <p>
+    This internal WWW server hosts content that allows you to see your work while making updates to the html widget.
+    The content listed in the index is automatically gathered from two sources:
+    <ul>
+      <li>Any directory in <span class="code">theSrc/internal_www/content</span> that contains at least one html file will be listed on the index page as a list of links, with the directory name as the title of the list</li>
+      <li>Each group defined in the test plans found in <span class="code">theSrc/test/snapshotTestDefinitions</span> will be listed.</li>
+    </ul>
+  </p>
 
-Here are the intended purposes of each section, keeping in mind they all do the same thing:
-<ul>
-  <li><span class="emphasis">Tutorial</span>: Build one or more tutorial pages to describe how your app works. The content should be descriptive and should serve to demonstrate key features to a future maintainer or the author of the consuming 'flip' project.</li>
-  <li><span class="emphasis">Examples</span>: Capture key reference examples of use here.</li>
-  <li><span class="emphasis">Regression </span>Suite: If there are complex cases you wish to capture outside of the tutorial or example section, for the purposes of running through the regression test suite, put them here.</li>
-  <li><span class="emphasis">Bugs and Improvements</span>: If there are outstanding bugs or improvements, capture examples of these bugs and improvements here.</li>
-  <li><span class="emphasis">Experiments</span>: This is just a scratch space to capture any ongoing dev work.</li>
-</ul>
+  <p>
+    In the rhtmlTemplate repo I have structured the content directory into `examples` and `tutorials`, and there is also an `experiments` dir just to demonstrate you can put anything you want in content which helps for rapid experimentation.
 
-<h2 class="tutorial"><a href="/content/tutorials/">Tutorial</a></h2>
-<p></p>
-<ul class='tutorials'>
-</ul>
+    Here are the intended purposes of each section, keeping in mind they all do the same thing:
+    <ul>
+      <li><span class="emphasis">Tutorial</span>: Build one or more tutorial pages to describe how your app works. The content should be descriptive and should serve to demonstrate key features to users and future maintainers.</li>
+      <li><span class="emphasis">Examples</span>: Key reference examples of use here.</li>
+      <li><span class="emphasis">Scratch</span>: This is just a scratch space to capture any ongoing dev work.</li>
+    </ul>
 
-<h2><a href="/content/examples/">Examples</a></h2>
-<ul class='examples'>
-</ul>
+    Note that since the introduction of the yaml based test plans, I no longer recommend extensive use of html files to present the widget configurations. The yaml syntax is a lot easier to maintain and organise for larger projects.
+  </p>
 
-<h2><a href="/content/regression_suite">Visual Regression Suite</a></h2>
-<ul class='regression_suite'>
-</ul>
-
-
-<h2><a href="/content/bugs_and_improvements">Bugs and Improvements</a></h2>
-<ul class='bugs_and_improvements'>
-</ul>
-
-<h2 style="margin-bottom:0px"><a href="/experiments">Experiments</a></h2>
-<span class="note">Experiments are not auto listed, so you will need to click through to see the list</span>
+  <h3>The experiments section can be found <a href="/experiments/ui">here</a>. Writeup pending.</h3>
 
 </body>
 </html>

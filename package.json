@@ -1,22 +1,26 @@
 {
   "private": true,
   "engines": {
-    "node": ">=6.9.5"
+    "node": ">=12.9.0"
   },
   "scripts": {
     "prepush": "node ./bin/prepush",
-    "test": "gulp testSpecs && gulp testVisual"
+    "test": "npm run localTest",
+    "localTest": "gulp testSpecs && gulp testVisual --env=local --branch=`git rev-parse --abbrev-ref HEAD`",
+    "travisTest": "gulp testSpecs && gulp testVisual --env=travis --branch=`git rev-parse --abbrev-ref HEAD`",
+    "gatherDiffs": "rm -rf .tmp/diffs; mkdir -p .tmp/diffs/; for I in `find theSrc/test/snapshots/local/VIS-554 -type d -name __diff_output__`; do cp $I/* .tmp/diffs/ 2> /dev/null; done; true",
+    "deleteDiffs": "find theSrc/test/snapshots -iname '__diff_output__' | xargs rm -rf"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
-    "husky": "^0.13.3",
-    "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#4.0.0"
+    "husky": "^0.13.3"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "d3": "4.7.2",
     "es6-promise": "^3.2.1",
-    "jquery": "^3.3.1",
-    "lodash": "^4.17.11"
+    "jquery": "^3.5.1",
+    "lodash": "^4.17.15",
+    "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#5.0.0"
   }
 }
