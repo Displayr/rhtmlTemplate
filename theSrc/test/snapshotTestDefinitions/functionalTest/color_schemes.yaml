@@ -1,0 +1,8 @@
+type: multi_widget_single_page
+title: "test"
+width: 400
+height: 400
+rowSize: 4
+widgets:
+  - config: 'data.red_theme'
+  - config: 'data.blue_theme'

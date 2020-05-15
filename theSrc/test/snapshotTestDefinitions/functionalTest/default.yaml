@@ -1,0 +1,7 @@
+type: multi_widget_single_page
+title: "test"
+width: 400
+height: 400
+rowSize: 4
+widgets:
+  - config: 'config.default'
