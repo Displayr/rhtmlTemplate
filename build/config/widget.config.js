@@ -13,7 +13,8 @@ const config = {
     singleWidgetSnapshotSelector: '#widget-container'
   },
   snapshotTesting: {
-    consoleLogHandler: () => {}, // suppress logging in snapshot testing
+    consoleLogHandler: () => { }, // use this to suppress logging in snapshot testing
+    // consoleLogHandler: (msg, testName) => { console.log(`${testName}: ${msg.args().join(',')}`) }, // use this to echo logging in snapshot testing
     testplanDirectory: 'theSrc/test/snapshotTestDefinitions',
     interactionTestDirectory: 'theSrc/test/bin',
     snapshotDirectory: 'theSrc/test/snapshots'
