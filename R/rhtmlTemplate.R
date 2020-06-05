@@ -24,7 +24,7 @@
 #'
 
 # TEMPLATE! - update the function name
-template <- function(settingsJsonString = '{}') {
+template <- function(settingsJsonString = '{}', padding = 0) {
 
   DEFAULT_WIDGET_WIDTH <- 600
   DEFAULT_WIDGET_HEIGHT <- 600
@@ -63,7 +63,7 @@ template <- function(settingsJsonString = '{}') {
       defaultHeight = height,
       browser.fill = TRUE,
       viewer.fill = TRUE,
-      padding = 0
+      padding = padding
     ),
     # TEMPLATE! - update the name here
     package = 'rhtmlTemplate'
