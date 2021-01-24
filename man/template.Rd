@@ -7,7 +7,7 @@
 https://github.com/Displayr/rhtmlTemplate
 }
 \usage{
-template(settingsJsonString = "{}")
+template(settingsJsonString = "{}", padding = 0)
 }
 \arguments{
 \item{param1}{is a good param}
