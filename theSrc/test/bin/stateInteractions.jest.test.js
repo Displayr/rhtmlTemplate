@@ -1,4 +1,6 @@
-const { snapshotTesting: { puppeteer, renderExamplePageTestHelper } } = require('rhtmlBuildUtils')
+const puppeteer = require('puppeteer')
+const { snapshotTesting: { renderExamplePageTestHelper } } = require('rhtmlBuildUtils')
+const loadWidget = require('../lib/loadWidget.helper')
 
 const {
   configureImageSnapshotMatcher,
@@ -7,11 +9,9 @@ const {
   testState,
   jestTimeout
 } = renderExamplePageTestHelper
-const loadWidget = require('../lib/loadWidget.helper')
 
-/* global jest beforeAll afterAll */
 jest.setTimeout(jestTimeout)
-configureImageSnapshotMatcher('stateInteractions')
+configureImageSnapshotMatcher({ collectionIdentifier: 'stateInteractions' })
 
 // NB these do not need to be persistent over time. The Ids are a convenience used to isolate tests via jest -t '11:'
 let testId = 0
@@ -30,11 +30,11 @@ describe('state interactions', () => {
   test(`${++testId}: Select a square`, async function () {
     const { page, templatePageObject } = await loadWidget({ browser })
 
-    await testSnapshots({ page, snapshotName: 'initial_load' })
+    await testSnapshots({ page, testName: 'initial_load' })
 
     await templatePageObject.selectSquare('blue')
 
-    await testSnapshots({ page, snapshotName: 'after_blue_square_selected' })
+    await testSnapshots({ page, testName: 'after_blue_square_selected' })
     await testState({ page, stateName: 'state.blue_selected', tolerance: 0 })
 
     await page.close()
@@ -46,7 +46,7 @@ describe('state interactions', () => {
       stateName: 'state.blue_selected'
     })
 
-    await testSnapshots({ page, snapshotName: 'after_blue_square_selected' })
+    await testSnapshots({ page, testName: 'after_blue_square_selected' })
 
     await page.close()
   })
