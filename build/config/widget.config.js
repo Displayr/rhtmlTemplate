@@ -10,15 +10,15 @@ const config = {
     default_border: false,
     css: [],
     isReadySelector: 'svg[rhtmlTemplate-status=ready]',
-    singleWidgetSnapshotSelector: '#widget-container'
+    singleWidgetSnapshotSelector: '#widget-container',
   },
   snapshotTesting: {
     consoleLogHandler: () => { }, // use this to suppress logging in snapshot testing
     // consoleLogHandler: (msg, testName) => { console.log(`${testName}: ${msg.args().join(',')}`) }, // use this to echo logging in snapshot testing
     testplanDirectory: 'theSrc/test/snapshotTestDefinitions',
     interactionTestDirectory: 'theSrc/test/bin',
-    snapshotDirectory: 'theSrc/test/snapshots'
-  }
+    snapshotDirectory: 'theSrc/test/snapshots',
+  },
 }
 
 const commandLineOverides = _.omit(cliArgs, ['_', '$0'])

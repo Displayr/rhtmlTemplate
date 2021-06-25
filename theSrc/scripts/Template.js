@@ -30,7 +30,7 @@ class Template {
     throwAway.doThings()
 
     this.state = {
-      selected: null
+      selected: null,
     }
   }
 
@@ -111,7 +111,7 @@ class Template {
       { color: this._getColor(0), name: this._getColor(0), x: 0, y: 0 },
       { color: this._getColor(1), name: this._getColor(1), x: this.initialWidth / 2, y: 0 },
       { color: this._getColor(2), name: this._getColor(2), x: 0, y: this.initialHeight / 2 },
-      { color: this._getColor(3), name: this._getColor(3), x: this.initialWidth / 2, y: this.initialHeight / 2 }
+      { color: this._getColor(3), name: this._getColor(3), x: this.initialWidth / 2, y: this.initialHeight / 2 },
     ]
 
     const allCells = this.outerSvg.selectAll('.node')

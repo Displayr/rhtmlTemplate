@@ -31,7 +31,7 @@ module.exports = function (element, width, height, stateChangedCallback) {
       } catch (err) {
         _showError(err, element)
       }
-    }
+    },
   }
 }
 

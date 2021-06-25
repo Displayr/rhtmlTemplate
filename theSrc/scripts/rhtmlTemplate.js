@@ -8,5 +8,5 @@ import widgetFactory from './rhtmlTemplate.factory'
 HTMLWidgets.widget({
   name: 'rhtmlTemplate',
   type: 'output',
-  factory: widgetFactory
+  factory: widgetFactory,
 })

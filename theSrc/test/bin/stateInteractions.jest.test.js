@@ -7,7 +7,7 @@ const {
   puppeteerSettings,
   testSnapshots,
   testState,
-  jestTimeout
+  jestTimeout,
 } = renderExamplePageTestHelper
 
 jest.setTimeout(jestTimeout)
@@ -43,7 +43,7 @@ describe('state interactions', () => {
   test(`${++testId}: Load saved state and see a selected square`, async function () {
     const { page } = await loadWidget({
       browser,
-      stateName: 'state.blue_selected'
+      stateName: 'state.blue_selected',
     })
 
     await testSnapshots({ page, testName: 'after_blue_square_selected' })
