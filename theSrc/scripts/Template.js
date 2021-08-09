@@ -66,6 +66,10 @@ class Template {
     this.outerSvg.attr(`rhtmlTemplate-status`, 'loading')
     this._draw()
     this.outerSvg.attr(`rhtmlTemplate-status`, 'ready')
+    if (this.config.log)
+      console.log(this.config.log)
+    if (this.config.errorlog)
+      console.error(this.config.errorlog)
   }
 
   _clearRootElement () {

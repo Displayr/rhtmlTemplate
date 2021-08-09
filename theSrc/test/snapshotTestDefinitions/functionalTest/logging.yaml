@@ -1,0 +1,22 @@
+testname: logging
+type: single_widget_single_page
+width: 400
+height: 400
+config: 'config.default|{"log":"foobar", "errorlog":"my error"}'
+assert: 
+  - type: log
+    match: foobaa
+  - type: log
+    notmatch: foo
+
+# type: multi_widget_single_page
+# title: "test"
+# width: 400
+# height: 400
+# rowSize: 4
+# widgets:
+#   - config: 'config.default|{"log":"foobar"}'
+#     assert: 
+#       - type: log
+#         match: foobar
+#   - config: 'config.default|{"log":"foobar"}'
