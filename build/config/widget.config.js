@@ -9,7 +9,7 @@ const config = {
     includeDimensionsOnWidgetDiv: true,
     default_border: false,
     css: [],
-    isReadySelector: 'svg[rhtmlTemplate-status=ready]',
+    isReadySelector: 'div[rhtmlwidget-status=ready]',
     singleWidgetSnapshotSelector: '#widget-container',
   },
   snapshotTesting: {
