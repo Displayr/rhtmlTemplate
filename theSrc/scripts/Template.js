@@ -63,9 +63,9 @@ class Template {
     this._clearRootElement()
     this._manipulateRootElementSize()
     this._addRootSvgToRootElement()
-    this.rootElement.setAttribute(`rhtmlwidget-status`, 'loading')
+    this.outerSvg.attr(`rhtmlwidget-status`, 'loading')
     this._draw()
-    this.rootElement.setAttribute(`rhtmlwidget-status`, 'ready')
+    this.outerSvg.attr(`rhtmlwidget-status`, 'ready')
   }
 
   _clearRootElement () {
