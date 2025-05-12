@@ -1,0 +1,18 @@
+name: Build rhtmlTemplate
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    name: Build rhtmlTemplate
+    permissions:
+      checks: write
+      contents: read
+    uses: Displayr/nixr-public/.github/workflows/build-flake-installable.yaml@master
+    with:
+      installable-path: pkgs.x86_64-linux.rPackages.rhtmlTemplate
+      build-args: --override-input rhtmlTemplate .
+      installable-name: rhtmlTemplate
+    secrets: inherit
