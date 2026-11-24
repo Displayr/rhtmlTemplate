@@ -9,3 +9,5 @@ node_modules
 package-lock.json
 package.json
 theSrc
+^AGENTS\.md$
+^CLAUDE\.md$
